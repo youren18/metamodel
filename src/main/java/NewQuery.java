@@ -27,13 +27,15 @@ import java.util.stream.Collectors;
 public class NewQuery extends QueryPostprocessDataContext{
     private static final Logger logger = LoggerFactory.getLogger(NewQuery.class);
     private final Resource resource;
-    private final DBFReader dbfReader;
+    private final File dbfFile;
+    private  DBFReader dbfReader;
 
     
     public NewQuery(File file){
         if(file == null){
             throw new IllegalArgumentException("file can not be null");
         }
+        dbfFile = file;
         resource = new FileResource(file);
         InputStream inputStream = null;
         try {
@@ -81,7 +83,7 @@ public class NewQuery extends QueryPostprocessDataContext{
             column.setColumnSize(field.getLength());
             table.addColumn(column);
         }
-
+        dbfReader.close();
         return schema;
 
     }
@@ -96,11 +98,20 @@ public class NewQuery extends QueryPostprocessDataContext{
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int i) {
 
         synchronized (dbfReader){
+            InputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(dbfFile);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            dbfReader = new DBFReader(inputStream);
             int rowCount = 0;
             final List<SelectItem> selectItems = list.stream().map(SelectItem::new).collect(Collectors.toList());
             final DataSetHeader header = new CachingDataSetHeader(selectItems);
             final List<Row> listValue = new LinkedList<>();
             int max = dbfReader.getRecordCount();
+
             while(rowCount < max){
                 Object[] objects = dbfReader.nextRecord();
                 listValue.add(new DefaultRow(header,objects));

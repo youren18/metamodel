@@ -13,6 +13,7 @@ import org.apache.metamodel.xml.XmlSaxDataContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Properties;
 
 
@@ -37,12 +38,13 @@ public class Hello {
         Schema schema = myDataContext.getDefaultSchema();
 
         Table table = schema.getTable(0);
-        Query query = myDataContext.query().from(table).select("*").where("CJSL").eq(1200).toQuery();
-        System.out.println(query.toString());
+        Query query = myDataContext.query().from(table).select("count","*").where("CJSL").eq(200).toQuery();
+        //System.out.println(query.toString());
         DataSet ds = myDataContext.executeQuery(query);
         while(ds.next()){
             Row row = ds.getRow();
             String d = (String)row.getValue(0);
+            //BigDecimal d = (BigDecimal) row.getValue(10);
             System.out.println(d);
         }
         System.out.println("hello");
