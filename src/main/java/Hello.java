@@ -1,3 +1,5 @@
+import com.mongodb.DB;
+import com.mongodb.Mongo;
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.csv.CsvDataContext;
 import org.apache.metamodel.data.DataSet;
@@ -6,10 +8,15 @@ import org.apache.metamodel.excel.ExcelDataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.json.JsonDataContext;
+import org.apache.metamodel.mongodb.mongo2.MongoDbDataContext;
+import org.apache.metamodel.query.FunctionType;
 import org.apache.metamodel.query.Query;
+import org.apache.metamodel.salesforce.SalesforceDataContext;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.apache.metamodel.xml.XmlSaxDataContext;
+
+import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,9 +26,11 @@ import java.util.Properties;
 
 public class Hello {
     public static void main(String[] args) {
+        //DataContext saleDataContext = new SalesforceDataContext("","");
+        //DataContext mongDataContext = new MongoDbDataContext(new DB(new Mongo(),""));
         //DataContext xmlDataContext = new XmlSaxDataContext(new File(""));
         //DataContext jsonDataContext = new JsonDataContext(new File(""));
-        //DataContext csvDataContext = new CsvDataContext(new File(""));
+        DataContext csvDataContext = new CsvDataContext(new File(""));
         //DataContext excelDataContext = new ExcelDataContext(new File(""));
         DataContext myDataContext = new NewQuery(new File("E:\\gh.dbf"));
         /*
@@ -38,16 +47,30 @@ public class Hello {
         Schema schema = myDataContext.getDefaultSchema();
 
         Table table = schema.getTable(0);
-        Query query = myDataContext.query().from(table).select("count","*").where("CJSL").eq(200).toQuery();
-        //System.out.println(query.toString());
+        Query query = myDataContext.query().from(table).select(FunctionType.COUNT,"CJJG").where("CJSL").eq(200).toQuery();
+        System.out.println(query.toString());
+
         DataSet ds = myDataContext.executeQuery(query);
         while(ds.next()){
             Row row = ds.getRow();
-            String d = (String)row.getValue(0);
-            //BigDecimal d = (BigDecimal) row.getValue(10);
+            //String d = (String)row.getValue(0);
+
+            long d = (long) row.getValue(0);
             System.out.println(d);
         }
+        /*
+        query = myDataContext.query().from(table).select("CJJG").where("CJSL").eq(1200).toQuery();
+        System.out.println(query.toString());
+        ds = myDataContext.executeQuery(query);
+        while(ds.next()){
+            Row row = ds.getRow();
+            //String d = (String)row.getValue(0);
+            BigDecimal d = (BigDecimal) row.getValue(0);
+            System.out.println(d);
+        }
+        */
         System.out.println("hello");
+
         //File file = new File("e:\\1.xls");
         //DataContext dataContext = DataContextFactory.createExcelDataContext(file);
     }

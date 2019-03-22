@@ -1,15 +1,12 @@
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
-import jnr.ffi.Struct;
 import org.apache.metamodel.MetaModelException;
 import org.apache.metamodel.QueryPostprocessDataContext;
 import org.apache.metamodel.data.*;
+import org.apache.metamodel.query.FilterItem;
 import org.apache.metamodel.query.SelectItem;
 import org.apache.metamodel.schema.*;
-import org.apache.metamodel.schema.builder.DocumentSourceProvider;
-import org.apache.metamodel.schema.builder.SchemaBuilder;
-import org.apache.metamodel.schema.builder.SingleTableInferentialSchemaBuilder;
 import org.apache.metamodel.util.FileResource;
 import org.apache.metamodel.util.Resource;
 import org.slf4j.Logger;
@@ -19,7 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,7 +79,7 @@ public class NewQuery extends QueryPostprocessDataContext{
             column.setColumnSize(field.getLength());
             table.addColumn(column);
         }
-        dbfReader.close();
+        //dbfReader.close();
         return schema;
 
     }
@@ -96,25 +92,24 @@ public class NewQuery extends QueryPostprocessDataContext{
 
     @Override
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int i) {
-
         synchronized (dbfReader){
-            InputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(dbfFile);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            dbfReader = new DBFReader(inputStream);
+            getDBFReader();
             int rowCount = 0;
             final List<SelectItem> selectItems = list.stream().map(SelectItem::new).collect(Collectors.toList());
             final DataSetHeader header = new CachingDataSetHeader(selectItems);
             final List<Row> listValue = new LinkedList<>();
             int max = dbfReader.getRecordCount();
-
+            if(i != -1){
+                max = i;
+            }
             while(rowCount < max){
                 Object[] objects = dbfReader.nextRecord();
-                listValue.add(new DefaultRow(header,objects));
+                Object[] dbfObject = new Object[list.size()];
+                for (int j = 0; j < list.size(); ++j){
+                    int fieldNumber = list.get(j).getColumnNumber();
+                    dbfObject[j] = objects[fieldNumber];
+                }
+                listValue.add(new DefaultRow(header,dbfObject));
                 rowCount++;
             }
             return new InMemoryDataSet(header,listValue);
@@ -122,5 +117,59 @@ public class NewQuery extends QueryPostprocessDataContext{
 
     }
 
+    @Override
+    protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int first, int last){
+        if(first == 1){
+            return materializeMainSchemaTable(table,list,last);
+        }
+        synchronized (dbfReader){
+            getDBFReader();
+
+            int rowCount = 0;
+            final List<SelectItem> selectItems = list.stream().map(SelectItem::new).collect(Collectors.toList());
+            final DataSetHeader header = new CachingDataSetHeader(selectItems);
+            final List<Row> listValue = new LinkedList<>();
+            int max = dbfReader.getRecordCount();
+            if(last != -1){
+                max = last;
+            }
+            while(rowCount < first - 1){
+                rowCount ++;
+                dbfReader.nextRecord();
+            }
+            while(rowCount < max){
+                Object[] objects = dbfReader.nextRecord();
+                Object[] dbfObject = new Object[list.size()];
+                for (int j = 0; j < list.size(); ++j){
+                    int fieldNumber = list.get(j).getColumnNumber();
+                    dbfObject[j] = objects[fieldNumber];
+                }
+                listValue.add(new DefaultRow(header,dbfObject));
+                rowCount++;
+            }
+            return new InMemoryDataSet(header,listValue);
+        }
+
+    }
+
+    @Override
+    protected Number executeCountQuery(Table table, List<FilterItem> whereItems, boolean functionApproximationAllowed){
+        return null;
+    }
+
+    protected void getDBFReader(){
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(dbfFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        dbfReader = new DBFReader(inputStream);
+    }
+
+    public ColumnType getDBFColumnType(int index){
+        getDBFReader();
+        return null;
+    }
 
 }
