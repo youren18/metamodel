@@ -5,8 +5,6 @@ import org.apache.metamodel.csv.CsvDataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.data.Row;
 import org.apache.metamodel.excel.ExcelDataContext;
-import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
-import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.json.JsonDataContext;
 import org.apache.metamodel.mongodb.mongo2.MongoDbDataContext;
 import org.apache.metamodel.query.FunctionType;
@@ -16,23 +14,18 @@ import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.apache.metamodel.xml.XmlSaxDataContext;
 
-import javax.sql.DataSource;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Properties;
 
 
 public class Hello {
     public static void main(String[] args) {
-        //DataContext saleDataContext = new SalesforceDataContext("","");
-        //DataContext mongDataContext = new MongoDbDataContext(new DB(new Mongo(),""));
-        //DataContext xmlDataContext = new XmlSaxDataContext(new File(""));
-        //DataContext jsonDataContext = new JsonDataContext(new File(""));
+        DataContext saleDataContext = new SalesforceDataContext("","");
+        DataContext mongDataContext = new MongoDbDataContext(new DB(new Mongo(),""));
+        DataContext xmlDataContext = new XmlSaxDataContext(new File(""));
+        DataContext jsonDataContext = new JsonDataContext(new File(""));
         DataContext csvDataContext = new CsvDataContext(new File(""));
-        //DataContext excelDataContext = new ExcelDataContext(new File(""));
-        DataContext myDataContext = new NewQuery(new File("E:\\gh.dbf"));
+        DataContext excelDataContext = new ExcelDataContext(new File(""));
+        DataContext myDataContext = new DBFDataContext(new File("E:\\gh.dbf"));
         /*
         Properties properties = new Properties();
         try {

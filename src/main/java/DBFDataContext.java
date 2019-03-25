@@ -1,14 +1,13 @@
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
-import org.apache.metamodel.MetaModelException;
-import org.apache.metamodel.QueryPostprocessDataContext;
+import org.apache.metamodel.*;
 import org.apache.metamodel.data.*;
-import org.apache.metamodel.query.FilterItem;
 import org.apache.metamodel.query.SelectItem;
 import org.apache.metamodel.schema.*;
 import org.apache.metamodel.util.FileResource;
 import org.apache.metamodel.util.Resource;
+import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,14 +19,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class NewQuery extends QueryPostprocessDataContext{
-    private static final Logger logger = LoggerFactory.getLogger(NewQuery.class);
+public class DBFDataContext extends QueryPostprocessDataContext implements UpdateableDataContext {
+    private static final Logger logger = LoggerFactory.getLogger(DBFDataContext.class);
     private final Resource resource;
     private final File dbfFile;
     private  DBFReader dbfReader;
 
-    
-    public NewQuery(File file){
+    @Contract("null -> fail")
+    public DBFDataContext(File file){
         if(file == null){
             throw new IllegalArgumentException("file can not be null");
         }
@@ -43,6 +42,14 @@ public class NewQuery extends QueryPostprocessDataContext{
         dbfReader = new DBFReader(inputStream);
 
 
+    }
+
+    public Resource getResource(){
+        return resource;
+    }
+
+    public File getDbfFile(){
+        return dbfFile;
     }
 
     @Override
@@ -96,21 +103,21 @@ public class NewQuery extends QueryPostprocessDataContext{
             getDBFReader();
             int rowCount = 0;
             final List<SelectItem> selectItems = list.stream().map(SelectItem::new).collect(Collectors.toList());
-            final DataSetHeader header = new CachingDataSetHeader(selectItems);
             final List<Row> listValue = new LinkedList<>();
+            final DataSetHeader header = new CachingDataSetHeader(selectItems);
             int max = dbfReader.getRecordCount();
             if(i != -1){
                 max = i;
             }
             while(rowCount < max){
-                Object[] objects = dbfReader.nextRecord();
                 Object[] dbfObject = new Object[list.size()];
+                Object[] objects = dbfReader.nextRecord();
                 for (int j = 0; j < list.size(); ++j){
                     int fieldNumber = list.get(j).getColumnNumber();
                     dbfObject[j] = objects[fieldNumber];
                 }
-                listValue.add(new DefaultRow(header,dbfObject));
                 rowCount++;
+                listValue.add(new DefaultRow(header,dbfObject));
             }
             return new InMemoryDataSet(header,listValue);
         }
@@ -152,12 +159,8 @@ public class NewQuery extends QueryPostprocessDataContext{
 
     }
 
-    @Override
-    protected Number executeCountQuery(Table table, List<FilterItem> whereItems, boolean functionApproximationAllowed){
-        return null;
-    }
 
-    protected void getDBFReader(){
+    private void getDBFReader(){
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(dbfFile);
@@ -172,4 +175,26 @@ public class NewQuery extends QueryPostprocessDataContext{
         return null;
     }
 
+    @Override
+    protected void finalize() throws Throwable{
+        super.finalize();
+        dbfReader.close();
+    }
+
+
+    /**
+     * Submits an {@link UpdateScript} for execution on the {@link DataContext}.
+     * <p>
+     * Since implementations of the {@link DataContext} vary quite a lot, there
+     * is no golden rule as to how an update script will be executed. But the
+     * implementors should strive towards handling an {@link UpdateScript} as a
+     * single transactional change to the data store.
+     *
+     * @param update the update script to execute
+     * @return a summary of the updates performed
+     */
+    @Override
+    public UpdateSummary executeUpdate(UpdateScript update) {
+        return null;
+    }
 }
