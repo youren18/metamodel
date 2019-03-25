@@ -1,9 +1,62 @@
+import com.linuxense.javadbf.DBFDataType;
+import com.linuxense.javadbf.DBFField;
+import com.linuxense.javadbf.DBFReader;
 import org.apache.metamodel.schema.*;
 
-import java.util.Collection;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class DBFTable extends AbstractTable {
+
+    private static final long serialVersionUID = 1L;
+
+    private final DBFSchema dbfSchema;
+    private final String tableName;
+    private List<Column> columns;
+
+    public DBFTable(DBFSchema schema, String name, List<String> columnName){
+        this(schema, name);
+        columns = buildColumns(columnName);
+    }
+
+    public DBFTable(DBFSchema schema, String name){
+        dbfSchema = schema;
+        tableName = name;
+    }
+
+    private List<Column> buildColumns(){
+        DBFReader dbfReader = dbfSchema.getDbfDataContext().getDBFReader();
+        final int columnCount = dbfReader.getFieldCount();
+        final List<String> columnHeaders = new ArrayList<>();
+        for (int i = 0; i < columnCount; ++i){
+            columnHeaders.add(dbfReader.getField(i).getName());
+        }
+        return buildColumns(columnHeaders);
+    }
+
+    private List<Column> buildColumns(final List<String> columnNames){
+        List<Column> columns = new ArrayList<>();
+        for (int i = 0; i < columnNames.size(); ++i){
+            DBFField field = dbfSchema.getDbfDataContext().getDBFReader().getField(i);
+            DBFDataType type = field.getType();
+            ColumnType columnType = ColumnType.STRING;
+            if (type == DBFDataType.DOUBLE){
+                columnType = ColumnType.DOUBLE;
+            }else if (type == DBFDataType.DATE){
+                columnType = ColumnType.DATE;
+            } else if (type == DBFDataType.CHARACTER){
+                columnType = ColumnType.CHAR;
+            } else if (type == DBFDataType.LOGICAL){
+                columnType = ColumnType.BOOLEAN;
+            } else if (type == DBFDataType.LONG){
+                columnType = ColumnType.BIGINT;
+            }
+            Column column = new MutableColumn(columnNames.get(i),columnType,this,i,true);
+            columns.add(column);
+        }
+        return columns;
+    }
+
     /**
      * Gets the name of this Table
      *
@@ -11,7 +64,7 @@ public class DBFTable extends AbstractTable {
      */
     @Override
     public String getName() {
-        return null;
+        return tableName;
     }
 
     /**
@@ -32,7 +85,14 @@ public class DBFTable extends AbstractTable {
      */
     @Override
     public List<Column> getColumns() {
-        return null;
+        if (columns == null){
+            synchronized (this){
+                if (columns == null){
+                    columns = buildColumns();
+                }
+            }
+        }
+        return columns;
     }
 
     /**
@@ -42,7 +102,7 @@ public class DBFTable extends AbstractTable {
      */
     @Override
     public Schema getSchema() {
-        return null;
+        return dbfSchema;
     }
 
     /**
@@ -52,7 +112,7 @@ public class DBFTable extends AbstractTable {
      */
     @Override
     public TableType getType() {
-        return null;
+        return TableType.TABLE;
     }
 
     /**
@@ -63,7 +123,7 @@ public class DBFTable extends AbstractTable {
      */
     @Override
     public Collection<Relationship> getRelationships() {
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -75,4 +135,6 @@ public class DBFTable extends AbstractTable {
     public String getRemarks() {
         return null;
     }
+
+
 }

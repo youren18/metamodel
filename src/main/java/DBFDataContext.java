@@ -23,7 +23,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
     private static final Logger logger = LoggerFactory.getLogger(DBFDataContext.class);
     private final Resource resource;
     private final File dbfFile;
-    private  DBFReader dbfReader;
+    //private  DBFReader dbfReader;
 
     @Contract("null -> fail")
     public DBFDataContext(File file){
@@ -39,7 +39,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        dbfReader = new DBFReader(inputStream);
+        //dbfReader = new DBFReader(inputStream);
 
 
     }
@@ -62,6 +62,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         MutableSchema schema = new MutableSchema(schemaName);
         MutableTable table = new MutableTable(schemaName.substring(0,schemaName.length()-4),TableType.TABLE,schema);
         schema.addTable(table);
+        DBFReader dbfReader = getDBFReader();
         int length = dbfReader.getFieldCount();
         for(int i = 0; i < length; ++i){
             DBFField field = dbfReader.getField(i);
@@ -99,6 +100,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     @Override
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int i) {
+        DBFReader dbfReader = getDBFReader();
         synchronized (dbfReader){
             getDBFReader();
             int rowCount = 0;
@@ -129,6 +131,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         if(first == 1){
             return materializeMainSchemaTable(table,list,last);
         }
+        DBFReader dbfReader = getDBFReader();
         synchronized (dbfReader){
             getDBFReader();
 
@@ -160,14 +163,15 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
     }
 
 
-    private void getDBFReader(){
+    protected DBFReader getDBFReader(){
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(dbfFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        dbfReader = new DBFReader(inputStream);
+        DBFReader dbfReader = new DBFReader(inputStream);
+        return dbfReader;
     }
 
     public ColumnType getDBFColumnType(int index){
@@ -178,7 +182,6 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
     @Override
     protected void finalize() throws Throwable{
         super.finalize();
-        dbfReader.close();
     }
 
 

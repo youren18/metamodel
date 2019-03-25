@@ -1,6 +1,8 @@
 import org.apache.metamodel.schema.AbstractSchema;
 import org.apache.metamodel.schema.Table;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DBFSchema extends AbstractSchema {
@@ -19,6 +21,10 @@ public class DBFSchema extends AbstractSchema {
 
     protected void setDbfTable(DBFTable table){
         dbfTable = table;
+    }
+
+    protected DBFDataContext getDbfDataContext(){
+        return dbfDataContext;
     }
 
     /**
@@ -49,6 +55,9 @@ public class DBFSchema extends AbstractSchema {
      */
     @Override
     public List<Table> getTables() {
-        return null;
+        if(dbfTable == null){
+            return new ArrayList<>();
+        }
+        return Collections.singletonList(dbfTable);
     }
 }
