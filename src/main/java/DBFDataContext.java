@@ -1,6 +1,7 @@
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
+import com.linuxense.javadbf.DBFUtils;
 import org.apache.metamodel.*;
 import org.apache.metamodel.data.*;
 import org.apache.metamodel.query.SelectItem;
@@ -25,7 +26,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
     private final File dbfFile;
     //private  DBFReader dbfReader;
 
-    @Contract("null -> fail")
+
     public DBFDataContext(File file){
         if(file == null){
             throw new IllegalArgumentException("file can not be null");
@@ -52,42 +53,58 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         return dbfFile;
     }
 
+    public DBFField[] getDBFField(){
+        DBFReader dbfReader = getDBFReader();
+        int fieldCount = dbfReader.getFieldCount();
+        DBFField[] fields = new DBFField[fieldCount];
+        for (int i = 0; i < fieldCount; ++i){
+            fields[i] = dbfReader.getField(i);
+        }
+        DBFUtils.close(dbfReader);
+        //dbfReader.close();
+        return fields;
+    }
+
     @Override
     protected Schema getMainSchema() throws MetaModelException {
-        String schemaName = getMainSchemaName();
-        int index = Math.max(schemaName.lastIndexOf('\\'),schemaName.lastIndexOf('/'));
-        if(index != -1){
-            schemaName = schemaName.substring(index + 1);
-        }
-        MutableSchema schema = new MutableSchema(schemaName);
-        MutableTable table = new MutableTable(schemaName.substring(0,schemaName.length()-4),TableType.TABLE,schema);
-        schema.addTable(table);
-        DBFReader dbfReader = getDBFReader();
-        int length = dbfReader.getFieldCount();
-        for(int i = 0; i < length; ++i){
-            DBFField field = dbfReader.getField(i);
-            MutableColumn column = new MutableColumn(field.getName());
-            DBFDataType type = field.getType();
-            ColumnType columnType = ColumnType.VARCHAR;
-            if (type == DBFDataType.DOUBLE){
-                columnType = ColumnType.DOUBLE;
-            }else if (type == DBFDataType.DATE){
-                columnType = ColumnType.DATE;
-            } else if (type == DBFDataType.CHARACTER){
-                columnType = ColumnType.CHAR;
-            } else if (type == DBFDataType.LOGICAL){
-                columnType = ColumnType.BOOLEAN;
-            } else if (type == DBFDataType.MEMO){
-                columnType = ColumnType.VARCHAR;
-            }
-            column.setTable(table);
-            column.setType(columnType);
-            column.setColumnNumber(i);
-            column.setNativeType(field.getType().toString());
-            column.setColumnSize(field.getLength());
-            table.addColumn(column);
-        }
+//        String schemaName = getMainSchemaName();
+//        int index = Math.max(schemaName.lastIndexOf('\\'),schemaName.lastIndexOf('/'));
+//        if(index != -1){
+//            schemaName = schemaName.substring(index + 1);
+//        }
+//        MutableSchema schema = new MutableSchema(schemaName);
+//        MutableTable table = new MutableTable(schemaName.substring(0,schemaName.length()-4),TableType.TABLE,schema);
+//        schema.addTable(table);
+//        DBFReader dbfReader = getDBFReader();
+//        int length = dbfReader.getFieldCount();
+//        for(int i = 0; i < length; ++i){
+//            DBFField field = dbfReader.getField(i);
+//            MutableColumn column = new MutableColumn(field.getName());
+//            DBFDataType type = field.getType();
+//            ColumnType columnType = ColumnType.VARCHAR;
+//            if (type == DBFDataType.DOUBLE){
+//                columnType = ColumnType.DOUBLE;
+//            }else if (type == DBFDataType.DATE){
+//                columnType = ColumnType.DATE;
+//            } else if (type == DBFDataType.CHARACTER){
+//                columnType = ColumnType.CHAR;
+//            } else if (type == DBFDataType.LOGICAL){
+//                columnType = ColumnType.BOOLEAN;
+//            } else if (type == DBFDataType.MEMO){
+//                columnType = ColumnType.VARCHAR;
+//            }
+//            column.setTable(table);
+//            column.setType(columnType);
+//            column.setColumnNumber(i);
+//            column.setNativeType(field.getType().toString());
+//            column.setColumnSize(field.getLength());
+//            table.addColumn(column);
+//        }
         //dbfReader.close();
+        DBFSchema schema = new DBFSchema(getMainSchemaName(),this);
+        if(resource.isExists()){
+            schema.setDbfTable(new DBFTable(schema, resource.getName()));
+        }
         return schema;
 
     }
@@ -102,7 +119,6 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int i) {
         DBFReader dbfReader = getDBFReader();
         synchronized (dbfReader){
-            getDBFReader();
             int rowCount = 0;
             final List<SelectItem> selectItems = list.stream().map(SelectItem::new).collect(Collectors.toList());
             final List<Row> listValue = new LinkedList<>();
@@ -128,54 +144,35 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     @Override
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int first, int last){
-        if(first == 1){
-            return materializeMainSchemaTable(table,list,last);
+        final int rows;
+        if (first == 1) {
+            rows = last;
+        } else {
+            rows = last + (first - 1);
         }
-        DBFReader dbfReader = getDBFReader();
-        synchronized (dbfReader){
-            getDBFReader();
-
-            int rowCount = 0;
-            final List<SelectItem> selectItems = list.stream().map(SelectItem::new).collect(Collectors.toList());
-            final DataSetHeader header = new CachingDataSetHeader(selectItems);
-            final List<Row> listValue = new LinkedList<>();
-            int max = dbfReader.getRecordCount();
-            if(last != -1){
-                max = last;
-            }
-            while(rowCount < first - 1){
-                rowCount ++;
-                dbfReader.nextRecord();
-            }
-            while(rowCount < max){
-                Object[] objects = dbfReader.nextRecord();
-                Object[] dbfObject = new Object[list.size()];
-                for (int j = 0; j < list.size(); ++j){
-                    int fieldNumber = list.get(j).getColumnNumber();
-                    dbfObject[j] = objects[fieldNumber];
-                }
-                listValue.add(new DefaultRow(header,dbfObject));
-                rowCount++;
-            }
-            return new InMemoryDataSet(header,listValue);
+        DataSet dataSet = materializeMainSchemaTable(table, list, rows);
+        if (first > 1) {
+            dataSet = new FirstRowDataSet(dataSet, first);
         }
+        return dataSet;
 
     }
 
 
     protected DBFReader getDBFReader(){
         InputStream inputStream = null;
+
         try {
             inputStream = new FileInputStream(dbfFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        DBFReader dbfReader = new DBFReader(inputStream);
-        return dbfReader;
+
+        return new DBFReader(inputStream);
     }
 
     public ColumnType getDBFColumnType(int index){
-        getDBFReader();
+        //getDBFReader();
         return null;
     }
 
@@ -198,6 +195,8 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
      */
     @Override
     public UpdateSummary executeUpdate(UpdateScript update) {
-        return null;
+        final DBFUpdateCallback updateCallback = new DBFUpdateCallback(this);
+        update.run(updateCallback);
+        return updateCallback.getUpdateSummary();
     }
 }

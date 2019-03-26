@@ -1,3 +1,6 @@
+import com.linuxense.javadbf.DBFField;
+import com.linuxense.javadbf.DBFUtils;
+import com.linuxense.javadbf.DBFWriter;
 import org.apache.metamodel.AbstractUpdateCallback;
 import org.apache.metamodel.UpdateCallback;
 import org.apache.metamodel.create.TableCreationBuilder;
@@ -11,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.Writer;
 
 public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateCallback{
@@ -20,13 +25,28 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
     private final Resource resource;
     private final File file; 
     private Writer writer;
+    private final DBFDataContext dbfDataContext;
 
     public DBFUpdateCallback(DBFDataContext dataContext){
         super(dataContext);
         resource = dataContext.getResource();
         file = dataContext.getDbfFile();
+        dbfDataContext = dataContext;
     }
 
+    protected synchronized void writeRow(final String[] strings, final boolean append){
+
+        try {
+            DBFField[] fields = dbfDataContext.getDBFField();
+            DBFWriter dbfWriter = new DBFWriter(new FileOutputStream(file));
+            dbfWriter.setFields(fields);
+            dbfWriter.addRecord(strings);
+            DBFUtils.close(dbfWriter);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Initiates the building of a table creation operation.
@@ -96,6 +116,7 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
      */
     @Override
     public RowInsertionBuilder insertInto(Table table) throws IllegalArgumentException, IllegalStateException, UnsupportedOperationException {
-        return null;
+
+        return new DBFInsertBuilder(this,table);
     }
 }

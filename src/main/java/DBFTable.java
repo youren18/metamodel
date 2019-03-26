@@ -50,6 +50,8 @@ public class DBFTable extends AbstractTable {
                 columnType = ColumnType.BOOLEAN;
             } else if (type == DBFDataType.LONG){
                 columnType = ColumnType.BIGINT;
+            } else if (type == DBFDataType.FLOATING_POINT){
+                columnType = ColumnType.DOUBLE;
             }
             Column column = new MutableColumn(columnNames.get(i),columnType,this,i,true);
             columns.add(column);

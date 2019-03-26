@@ -23,6 +23,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:17.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.metamodel:MetaModel-full:5.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.metamodel:MetaModel-cassandra:5.2.0" level="project" />
     <orderEntry type="library" name="Maven: com.datastax.cassandra:cassandra-driver-core:3.6.0" level="project" />
