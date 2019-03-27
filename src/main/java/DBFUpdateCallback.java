@@ -1,3 +1,4 @@
+import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
@@ -17,6 +18,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Writer;
+import java.math.BigDecimal;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateCallback{
 
@@ -35,16 +40,48 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
     }
 
     protected synchronized void writeRow(final String[] strings, final boolean append){
-
+        DBFWriter dbfWriter = null;
         try {
             DBFField[] fields = dbfDataContext.getDBFField();
-            DBFWriter dbfWriter = new DBFWriter(new FileOutputStream(file));
+            Object [][] reData = dbfDataContext.getObject();
+            dbfWriter = new DBFWriter(new FileOutputStream(file));
             dbfWriter.setFields(fields);
-            dbfWriter.addRecord(strings);
+            Object object[] = new Object[fields.length];
+            for (int j = 0; j < reData.length; ++j){
+                dbfWriter.addRecord(reData[j]);
+            }
+
+            for (int i = 0; i < fields.length; ++i){
+                DBFDataType type = fields[i].getType();
+                if(type == DBFDataType.CHARACTER){
+                    object[i] = strings[i];
+                } else if (type == DBFDataType.NUMERIC){
+                    object[i] = new BigDecimal(strings[i]);
+                } else if (type == DBFDataType.FLOATING_POINT){
+                    object[i] = new Float(strings[i]);
+                } else if (type == DBFDataType.LONG){
+                    object[i] = new Long(strings[i]);
+                } else if (type == DBFDataType.DATE){
+                    System.out.println("dbfupdatecallback date" + strings[i]);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    ParsePosition parsePosition = new ParsePosition(0);
+
+                    object[i] = dateFormat.parse(strings[i],parsePosition);
+                } else if (type == DBFDataType.DOUBLE){
+                    object[i] = new Double(strings[i]);
+                } else if (type == DBFDataType.MEMO){
+                    object[i] = strings[i];
+                } else {
+                    object[i] = strings[i];
+                }
+            }
+            dbfWriter.addRecord(object);
             DBFUtils.close(dbfWriter);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally{
+            DBFUtils.close(dbfWriter);
         }
     }
 

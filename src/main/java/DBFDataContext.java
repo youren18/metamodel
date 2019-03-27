@@ -65,6 +65,17 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         return fields;
     }
 
+    public Object [][] getObject(){
+        DBFReader dbfReader = getDBFReader();
+        Object object[][] = new Object[dbfReader.getRecordCount()][dbfReader.getFieldCount()];
+        for (int i = 0; i < dbfReader.getRecordCount(); ++i){
+            object[i] = dbfReader.nextRecord();
+        }
+        return object;
+    }
+
+
+
     @Override
     protected Schema getMainSchema() throws MetaModelException {
 //        String schemaName = getMainSchemaName();

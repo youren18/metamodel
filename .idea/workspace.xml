@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="38956a9e-241a-4208-8d3e-87d325f631e3" name="Default" comment="dbf simple query">
-      <change afterPath="$PROJECT_DIR$/src/main/java/DBFInsertBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DBF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sd.iml" beforeDir="false" afterPath="$PROJECT_DIR$/sd.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DBFDataContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBFDataContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DBFTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBFTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DBFUpdateCallback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DBFUpdateCallback.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Hello.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Hello.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Hello.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Hello.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NewQuery.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -44,8 +40,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Hello.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="46" column="57" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="57" />
+            <state relative-caret-position="870">
+              <caret line="29" column="43" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="43" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/DBF.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="473">
+              <caret line="34" column="32" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -56,12 +64,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/DBFInsertBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
+            <state relative-caret-position="600">
               <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#302#303#0" expanded="true" />
-                <element signature="e#325#326#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -70,8 +76,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/DBFSchema.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1409">
-              <caret line="58" column="37" lean-forward="true" selection-start-line="58" selection-start-column="37" selection-end-line="58" selection-end-column="37" />
+            <state relative-caret-position="1350">
+              <caret line="58" column="37" selection-start-line="58" selection-start-column="37" selection-end-line="58" selection-end-column="37" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -82,32 +88,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/DBFDataContext.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="198" selection-start-line="198" selection-end-line="198" />
+            <state relative-caret-position="407">
+              <caret line="73" column="22" selection-start-line="73" selection-start-column="22" selection-end-line="73" selection-end-column="22" />
               <folding>
                 <element signature="method#DBFDataContext#0;class#DBFDataContext#0" />
+                <element signature="method#getDBFField#0;class#DBFDataContext#0" />
                 <element signature="method#getMainSchema#0;class#DBFDataContext#0" />
                 <element signature="method#materializeMainSchemaTable#0;class#DBFDataContext#0" />
                 <element signature="method#materializeMainSchemaTable#1;class#DBFDataContext#0" />
                 <element signature="method#getDBFColumnType#0;class#DBFDataContext#0" />
                 <element signature="method#finalize#0;class#DBFDataContext#0" />
-                <marker date="1553596304340" expanded="false" signature="2074:3742" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/DBFTable.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2549#2550#0" expanded="true" />
-                <element signature="e#2576#2577#0" expanded="true" />
-                <element signature="e#3127#3128#0" expanded="true" />
-                <element signature="e#3159#3160#0" expanded="true" />
+                <marker date="1553671820209" expanded="false" signature="2403:4071" ph="..." />
               </folding>
             </state>
           </provider>
@@ -116,10 +107,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/DBFUpdateCallback.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="42" column="39" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="39" />
+            <state relative-caret-position="180">
+              <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4376#4377#0" expanded="true" />
+                <element signature="e#4988#4989#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -184,9 +177,10 @@
         <option value="$PROJECT_DIR$/src/main/java/BDFDataContext.java" />
         <option value="$PROJECT_DIR$/src/main/java/DBFSchema.java" />
         <option value="$PROJECT_DIR$/src/main/java/DBFInsertBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/DBFTable.java" />
+        <option value="$PROJECT_DIR$/src/main/java/DBF.java" />
         <option value="$PROJECT_DIR$/src/main/java/DBFDataContext.java" />
         <option value="$PROJECT_DIR$/src/main/java/DBFUpdateCallback.java" />
-        <option value="$PROJECT_DIR$/src/main/java/DBFTable.java" />
         <option value="$PROJECT_DIR$/src/main/java/Hello.java" />
       </list>
     </option>
@@ -286,7 +280,7 @@
     <property name="DatabaseDriversLRU" value="oracle&#10;mysql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553597317313" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553672886379" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="F:/valuate" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -318,6 +312,14 @@
   <component name="RunManager" selected="Application.Hello">
     <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DBF" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DBF" />
+      <module name="sd" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -370,6 +372,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Hello" />
+        <item itemvalue="Application.DBF" />
         <item itemvalue="Application.Hello (1)" />
       </list>
     </recent_temporary>
@@ -402,6 +405,7 @@
       <workItem from="1553224140447" duration="12376000" />
       <workItem from="1553475364089" duration="24164000" />
       <workItem from="1553587028688" duration="8406000" />
+      <workItem from="1553648539065" duration="14716000" />
     </task>
     <task id="LOCAL-00001" summary="dbf simple query">
       <created>1553155859548</created>
@@ -414,7 +418,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="153076000" />
+    <option name="totallyTimeSpent" value="167792000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -427,8 +431,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22087745" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22390318" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Persistence" order="2" side_tool="true" />
       <window_info id="Designer" order="3" />
@@ -438,7 +443,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4941435" weight="0.31587562" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4941435" visible="true" weight="0.07364976" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.111292966" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -517,18 +522,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-nop/1.7.24/slf4j-nop-1.7.24.jar!/org/slf4j/impl/StaticLoggerBinder.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="e#678#679#0" expanded="true" />
-            <element signature="e#710#711#0" expanded="true" />
-            <element signature="e#841#842#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.24/slf4j-api-1.7.24.jar!/org/slf4j/helpers/NOPLoggerFactory.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
@@ -967,48 +960,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/DBFSchema.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1350">
+          <caret line="58" column="37" selection-start-line="58" selection-start-column="37" selection-end-line="58" selection-end-column="37" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/DBFTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1410">
+          <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/DBFInsertBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
+        <state relative-caret-position="600">
           <caret line="22" column="44" selection-start-line="22" selection-start-column="44" selection-end-line="22" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#302#303#0" expanded="true" />
-            <element signature="e#325#326#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/DBFDataContext.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/DBF.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="198" selection-start-line="198" selection-end-line="198" />
-          <folding>
-            <element signature="method#DBFDataContext#0;class#DBFDataContext#0" />
-            <element signature="method#getMainSchema#0;class#DBFDataContext#0" />
-            <element signature="method#materializeMainSchemaTable#0;class#DBFDataContext#0" />
-            <element signature="method#materializeMainSchemaTable#1;class#DBFDataContext#0" />
-            <element signature="method#getDBFColumnType#0;class#DBFDataContext#0" />
-            <element signature="method#finalize#0;class#DBFDataContext#0" />
-            <marker date="1553596304340" expanded="false" signature="2074:3742" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/DBFUpdateCallback.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="42" column="39" selection-start-line="42" selection-start-column="32" selection-end-line="42" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/DBFSchema.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1409">
-          <caret line="58" column="37" lean-forward="true" selection-start-line="58" selection-start-column="37" selection-end-line="58" selection-end-column="37" />
+        <state relative-caret-position="473">
+          <caret line="34" column="32" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1017,29 +1002,50 @@
     </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/github/albfernandez/javadbf/1.6.1/javadbf-1.6.1.jar!/com/linuxense/javadbf/DBFWriter.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="176" selection-start-line="176" selection-end-line="176" />
+        <state relative-caret-position="150">
+          <caret line="144" column="25" selection-start-line="144" selection-start-column="16" selection-end-line="144" selection-end-column="25" />
+          <folding>
+            <element signature="e#909#910#0" expanded="true" />
+            <element signature="e#946#947#0" expanded="true" />
+            <element signature="e#1352#1353#0" expanded="true" />
+            <element signature="e#1394#1395#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/DBFTable.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/DBFDataContext.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="53" column="46" selection-start-line="53" selection-start-column="46" selection-end-line="53" selection-end-column="46" />
+        <state relative-caret-position="407">
+          <caret line="73" column="22" selection-start-line="73" selection-start-column="22" selection-end-line="73" selection-end-column="22" />
+          <folding>
+            <element signature="method#DBFDataContext#0;class#DBFDataContext#0" />
+            <element signature="method#getDBFField#0;class#DBFDataContext#0" />
+            <element signature="method#getMainSchema#0;class#DBFDataContext#0" />
+            <element signature="method#materializeMainSchemaTable#0;class#DBFDataContext#0" />
+            <element signature="method#materializeMainSchemaTable#1;class#DBFDataContext#0" />
+            <element signature="method#getDBFColumnType#0;class#DBFDataContext#0" />
+            <element signature="method#finalize#0;class#DBFDataContext#0" />
+            <marker date="1553671820209" expanded="false" signature="2403:4071" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/DBFUpdateCallback.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="45" column="40" lean-forward="true" selection-start-line="45" selection-start-column="40" selection-end-line="45" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2549#2550#0" expanded="true" />
-            <element signature="e#2576#2577#0" expanded="true" />
-            <element signature="e#3127#3128#0" expanded="true" />
-            <element signature="e#3159#3160#0" expanded="true" />
+            <element signature="e#4376#4377#0" expanded="true" />
+            <element signature="e#4988#4989#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Hello.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="46" column="57" selection-start-line="46" selection-start-column="57" selection-end-line="46" selection-end-column="57" />
+        <state relative-caret-position="870">
+          <caret line="29" column="43" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
