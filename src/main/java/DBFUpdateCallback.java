@@ -3,6 +3,7 @@ import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFUtils;
 import com.linuxense.javadbf.DBFWriter;
 import org.apache.metamodel.AbstractUpdateCallback;
+import org.apache.metamodel.MetaModelHelper;
 import org.apache.metamodel.UpdateCallback;
 import org.apache.metamodel.create.TableCreationBuilder;
 import org.apache.metamodel.delete.RowDeletionBuilder;
@@ -13,7 +14,6 @@ import org.apache.metamodel.schema.Table;
 import org.apache.metamodel.util.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -85,6 +85,14 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
         }
     }
 
+    public Resource getResource(){return resource;}
+
+    private void validateTable(Table table) {
+        if (!(table instanceof DBFTable)) {
+            throw new IllegalArgumentException("Not a valid dbf table: " + table);
+        }
+    }
+
     /**
      * Initiates the building of a table creation operation.
      *
@@ -98,7 +106,8 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
      */
     @Override
     public TableCreationBuilder createTable(Schema schema, String name) throws IllegalArgumentException, IllegalStateException {
-        return null;
+
+        return new DBFCreateTableBuilder(this, MetaModelHelper.resolveUnderlyingSchema(schema),name);
     }
 
     /**
@@ -108,7 +117,7 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
      */
     @Override
     public boolean isDeleteSupported() {
-        return false;
+        return true;
     }
 
     /**
@@ -122,7 +131,8 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
      */
     @Override
     public RowDeletionBuilder deleteFrom(Table table) throws IllegalArgumentException, IllegalStateException, UnsupportedOperationException {
-        return null;
+        validateTable(table);
+        return new DBFDeleteBuilder(this,table);
     }
 
     /**
@@ -153,7 +163,7 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
      */
     @Override
     public RowInsertionBuilder insertInto(Table table) throws IllegalArgumentException, IllegalStateException, UnsupportedOperationException {
-
+        validateTable(table);
         return new DBFInsertBuilder(this,table);
     }
 }

@@ -1,5 +1,4 @@
 import com.linuxense.javadbf.*;
-
 import java.io.*;
 
 public class DBF {

@@ -9,7 +9,7 @@ final class DBFInsertBuilder extends AbstractRowInsertionBuilder<DBFUpdateCallba
     }
     /**
      * Commits the row insertion operation. This operation will write the row to
-     * the {@link DataContext}.
+     * the {@link DBFDataContext}.
      *
      * @throws MetaModelException if the operation was rejected
      */

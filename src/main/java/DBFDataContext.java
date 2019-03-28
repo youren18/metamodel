@@ -1,4 +1,3 @@
-import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFUtils;
@@ -8,10 +7,8 @@ import org.apache.metamodel.query.SelectItem;
 import org.apache.metamodel.schema.*;
 import org.apache.metamodel.util.FileResource;
 import org.apache.metamodel.util.Resource;
-import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -25,7 +22,6 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
     private final Resource resource;
     private final File dbfFile;
     //private  DBFReader dbfReader;
-
 
     public DBFDataContext(File file){
         if(file == null){
@@ -73,8 +69,6 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         }
         return object;
     }
-
-
 
     @Override
     protected Schema getMainSchema() throws MetaModelException {

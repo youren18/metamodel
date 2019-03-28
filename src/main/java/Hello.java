@@ -5,6 +5,7 @@ import org.apache.metamodel.UpdateableDataContext;
 import org.apache.metamodel.csv.CsvDataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.data.Row;
+import org.apache.metamodel.delete.DeleteFrom;
 import org.apache.metamodel.excel.ExcelDataContext;
 import org.apache.metamodel.insert.InsertInto;
 import org.apache.metamodel.json.JsonDataContext;
@@ -15,9 +16,7 @@ import org.apache.metamodel.salesforce.SalesforceDataContext;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.apache.metamodel.xml.XmlSaxDataContext;
-
 import java.io.File;
-
 
 public class Hello {
     public static void main(String[] args) {
@@ -25,8 +24,8 @@ public class Hello {
 //        DataContext mongDataContext = new MongoDbDataContext(new DB(new Mongo(),""));
 //        DataContext xmlDataContext = new XmlSaxDataContext(new File(""));
 //        DataContext jsonDataContext = new JsonDataContext(new File(""));
-       // DataContext csvDataContext = new CsvDataContext(new File(""));
-//        DataContext excelDataContext = new ExcelDataContext(new File(""));
+        //DataContext csvDataContext = new CsvDataContext(new File(""));
+        //DataContext excelDataContext = new ExcelDataContext(new File(""));
         UpdateableDataContext myDataContext = new DBFDataContext(new File("E:\\gh.dbf"));
         /*
         Properties properties = new Properties();
@@ -40,25 +39,27 @@ public class Hello {
         DataContext mysqlDataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(dataContextProperties);
         */
         Schema schema = myDataContext.getDefaultSchema();
-
         Table table = schema.getTable(0);
                 myDataContext.executeUpdate(
-                new InsertInto(table).value(0,"A").value(1,
-                        "").value(2,100).value(3,"239382").value(4,
-                "A").value(5,1).value(6,0).value(7,"A").value(8,
-                        "A").value(9,"A").value(10,1).value(11,
-                        1).value(12,"A").value(13,"A").value(14,"A"));
+                        new DeleteFrom(table).where("CJSL").eq(200)
+//                new InsertInto(table).value(0,"A").value(1,
+//                        "").value(2,100).value(3,"239382").value(4,
+//                "A").value(5,1).value(6,0).value(7,"A").value(8,
+//                        "A").value(9,"A").value(10,1).value(11,
+//                        1).value(12,"A").value(13,"A").value(14,"A")
+                        );
 //        Query query = myDataContext.query().from(table).select(FunctionType.COUNT,"CJJG").where("CJSL").eq(200).toQuery();
 //        System.out.println(query.toString());
 //
 //        DataSet ds = myDataContext.executeQuery(query);
 //        while(ds.next()){
 //            Row row = ds.getRow();
-//            //String d = (String)row.getValue(0);
+//            String d = (String)row.getValue(0);
 //
 //            long d = (long) row.getValue(0);
 //            System.out.println(d);
 //        }
+//        ds.close();
         /*
         query = myDataContext.query().from(table).select("CJJG").where("CJSL").eq(1200).toQuery();
         System.out.println(query.toString());
@@ -71,7 +72,6 @@ public class Hello {
         }
         */
         System.out.println("hello");
-
         //File file = new File("e:\\1.xls");
         //DataContext dataContext = DataContextFactory.createExcelDataContext(file);
     }

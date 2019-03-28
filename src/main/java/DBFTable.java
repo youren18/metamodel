@@ -25,6 +25,7 @@ public class DBFTable extends AbstractTable {
     }
 
     private List<Column> buildColumns(){
+
         DBFReader dbfReader = dbfSchema.getDbfDataContext().getDBFReader();
         final int columnCount = dbfReader.getFieldCount();
         final List<String> columnHeaders = new ArrayList<>();

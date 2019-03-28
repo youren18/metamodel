@@ -1,6 +1,5 @@
 import org.apache.metamodel.schema.AbstractSchema;
 import org.apache.metamodel.schema.Table;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
