@@ -9,6 +9,7 @@ import org.apache.metamodel.create.TableCreationBuilder;
 import org.apache.metamodel.delete.RowDeletionBuilder;
 import org.apache.metamodel.drop.TableDropBuilder;
 import org.apache.metamodel.insert.RowInsertionBuilder;
+import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
 import org.apache.metamodel.util.Resource;
@@ -39,16 +40,47 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
         dbfDataContext = dataContext;
     }
 
-    protected synchronized void writeRow(final String[] strings, final boolean append){
+    public File getFile() {
+        return file;
+    }
+
+    protected synchronized void writeRow(final String[] strings, Table table, final boolean append){
         DBFWriter dbfWriter = null;
         try {
             DBFField[] fields = dbfDataContext.getDBFField();
-            Object [][] reData = dbfDataContext.getObject();
-            dbfWriter = new DBFWriter(new FileOutputStream(file));
-            dbfWriter.setFields(fields);
-            Object object[] = new Object[fields.length];
-            for (int j = 0; j < reData.length; ++j){
-                dbfWriter.addRecord(reData[j]);
+            dbfWriter = null;
+            //dbfWriter.setFields(fields);
+            Object object[] = new Object[strings.length];
+
+            if(fields == null){
+                fields = new DBFField[strings.length];
+                for (int i = 0; i < strings.length; ++i){
+                    fields[i] = new DBFField();
+                    fields[i].setName(table.getColumn(i).getName());
+                    ColumnType type = table.getColumn(i).getType();
+                    if(type == ColumnType.DOUBLE){
+                        fields[i].setType(DBFDataType.DOUBLE);
+                    } else if (type == ColumnType.STRING){
+                        fields[i].setType(DBFDataType.CHARACTER);
+                    } else if (type == ColumnType.BIGINT){
+                        fields[i].setType(DBFDataType.LONG);
+                    } else if (type == ColumnType.DATE){
+                        fields[i].setType(DBFDataType.DATE);
+                    } else if (type == ColumnType.BOOLEAN){
+                        fields[i].setType(DBFDataType.LOGICAL);
+                    } else if (type == ColumnType.CHAR){
+                        fields[i].setType(DBFDataType.CHARACTER);
+                    }
+
+                }
+                try {
+                    dbfWriter = new DBFWriter(new FileOutputStream(file));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                dbfWriter.setFields(fields);
+            } else {
+                dbfWriter = new DBFWriter(file);
             }
 
             for (int i = 0; i < fields.length; ++i){
@@ -58,17 +90,16 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
                 } else if (type == DBFDataType.NUMERIC){
                     object[i] = new BigDecimal(strings[i]);
                 } else if (type == DBFDataType.FLOATING_POINT){
-                    object[i] = new Float(strings[i]);
+                    object[i] = new BigDecimal(strings[i]);
                 } else if (type == DBFDataType.LONG){
-                    object[i] = new Long(strings[i]);
+                    object[i] = new Integer(strings[i]);
                 } else if (type == DBFDataType.DATE){
                     System.out.println("dbfupdatecallback date" + strings[i]);
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     ParsePosition parsePosition = new ParsePosition(0);
-
                     object[i] = dateFormat.parse(strings[i],parsePosition);
                 } else if (type == DBFDataType.DOUBLE){
-                    object[i] = new Double(strings[i]);
+                    object[i] = new BigDecimal(strings[i]);
                 } else if (type == DBFDataType.MEMO){
                     object[i] = strings[i];
                 } else {
@@ -76,14 +107,12 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
                 }
             }
             dbfWriter.addRecord(object);
-            DBFUtils.close(dbfWriter);
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally{
+        }  finally{
             DBFUtils.close(dbfWriter);
         }
     }
+
 
     public Resource getResource(){return resource;}
 

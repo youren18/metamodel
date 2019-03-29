@@ -3,7 +3,6 @@ import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import org.apache.metamodel.schema.*;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 public class DBFTable extends AbstractTable {
@@ -24,9 +23,18 @@ public class DBFTable extends AbstractTable {
         tableName = name;
     }
 
+    public DBFTable(DBFSchema schema, List<Column> columns,String name ){
+        dbfSchema = schema;
+        tableName = name;
+        this.columns = columns;
+    }
+
     private List<Column> buildColumns(){
 
         DBFReader dbfReader = dbfSchema.getDbfDataContext().getDBFReader();
+        if(dbfReader == null){
+            return buildColumnsByNull();
+        }
         final int columnCount = dbfReader.getFieldCount();
         final List<String> columnHeaders = new ArrayList<>();
         for (int i = 0; i < columnCount; ++i){
@@ -38,7 +46,11 @@ public class DBFTable extends AbstractTable {
     private List<Column> buildColumns(final List<String> columnNames){
         List<Column> columns = new ArrayList<>();
         for (int i = 0; i < columnNames.size(); ++i){
-            DBFField field = dbfSchema.getDbfDataContext().getDBFReader().getField(i);
+            DBFReader reader = dbfSchema.getDbfDataContext().getDBFReader();
+            if(reader == null){
+                return buildColumnsByNull();
+            }
+            DBFField field = reader.getField(i);
             DBFDataType type = field.getType();
             ColumnType columnType = ColumnType.STRING;
             if (type == DBFDataType.DOUBLE){
@@ -58,6 +70,14 @@ public class DBFTable extends AbstractTable {
             columns.add(column);
         }
         return columns;
+    }
+
+    private List<Column> buildColumnsByNull(){
+        if (columns != null){
+            return columns;
+        }
+        return null;
+
     }
 
     /**

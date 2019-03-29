@@ -1,3 +1,5 @@
+import com.linuxense.javadbf.DBFReader;
+import com.linuxense.javadbf.DBFWriter;
 import org.apache.metamodel.MetaModelException;
 import org.apache.metamodel.create.AbstractTableCreationBuilder;
 import org.apache.metamodel.create.TableCreationBuilder;
@@ -33,10 +35,17 @@ final class DBFCreateTableBuilder extends AbstractTableCreationBuilder<DBFUpdate
         DBFDataContext dbfDataContext = (DBFDataContext) updateCallback.getDataContext();
 
         DBFSchema schema = (DBFSchema) table.getSchema();
-        DBFTable dbfTable = new DBFTable(schema, table.getName());
+        DBFTable dbfTable = new DBFTable(schema,table.getColumns(), table.getName());
         schema.setDbfTable(dbfTable);
         return dbfTable;
     }
+
+    /**
+     * 根据已有的table创建一个新的table，由于dbfreader不能读取空文件eofexception
+     * 因此重写like函数，
+     * @param table
+     * @return
+     */
     @Override
     public DBFCreateTableBuilder like(Table table){
         List<Column> columns = table.getColumns();
@@ -44,6 +53,8 @@ final class DBFCreateTableBuilder extends AbstractTableCreationBuilder<DBFUpdate
         for (Column column : columns){
             copyTable.addColumn(column);
         }
+        //DBFUpdateCallback updateCallback = getUpdateCallback();
+        //DBFWriter writer
         return this;
     }
 

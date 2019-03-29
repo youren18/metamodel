@@ -9,10 +9,8 @@ import org.apache.metamodel.util.FileResource;
 import org.apache.metamodel.util.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +49,9 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     public DBFField[] getDBFField(){
         DBFReader dbfReader = getDBFReader();
+        if(dbfReader == null){
+            return getDBFFieldByNull();
+        }
         int fieldCount = dbfReader.getFieldCount();
         DBFField[] fields = new DBFField[fieldCount];
         for (int i = 0; i < fieldCount; ++i){
@@ -61,8 +62,20 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         return fields;
     }
 
+    /**
+     * 向空文件中写入数据时获取field属性
+     *
+     * @return
+     */
+    public DBFField[] getDBFFieldByNull(){
+        return null;
+    }
+
     public Object [][] getObject(){
         DBFReader dbfReader = getDBFReader();
+        if (dbfReader == null){
+            return null;
+        }
         Object object[][] = new Object[dbfReader.getRecordCount()][dbfReader.getFieldCount()];
         for (int i = 0; i < dbfReader.getRecordCount(); ++i){
             object[i] = dbfReader.nextRecord();
@@ -163,16 +176,21 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     }
 
-
     protected DBFReader getDBFReader(){
         InputStream inputStream = null;
-
         try {
             inputStream = new FileInputStream(dbfFile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
+        try {
+            long size = ((FileInputStream) inputStream).getChannel().size();
+            if(size == 0){
+                return null;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return new DBFReader(inputStream);
     }
 

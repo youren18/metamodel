@@ -1,5 +1,7 @@
 import org.apache.metamodel.MetaModelException;
+import org.apache.metamodel.data.Row;
 import org.apache.metamodel.insert.AbstractRowInsertionBuilder;
+import org.apache.metamodel.insert.RowInsertionBuilder;
 import org.apache.metamodel.schema.Table;
 
 final class DBFInsertBuilder extends AbstractRowInsertionBuilder<DBFUpdateCallback> {
@@ -20,6 +22,16 @@ final class DBFInsertBuilder extends AbstractRowInsertionBuilder<DBFUpdateCallba
         for (int i = 0; i < stringValues.length; i++) {
             stringValues[i] = values[i] == null ? "" : values[i].toString();
         }
-        getUpdateCallback().writeRow(stringValues, true);
+        getUpdateCallback().writeRow(stringValues, getTable(),true);
+    }
+
+    @Override
+    public RowInsertionBuilder like(Row row){
+        String string[] = new String[row.size()];
+        for (int i = 0; i < row.size(); ++i){
+            string[i] = row.getValue(i) == null ? "" : row.getValue(i).toString();
+        }
+        getUpdateCallback().writeRow(string, getTable(), true);
+        return this;
     }
 }

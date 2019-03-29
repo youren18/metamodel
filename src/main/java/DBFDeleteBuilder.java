@@ -33,7 +33,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
      */
     @Override
     public void execute() throws MetaModelException {
-        final File file = FileHelper.createTempFile("metamodel_deletion","dbf");
+        final File file = FileHelper.createTempFile("metamodel_deletion",".dbf");
         final DBFDataContext dbfDataContext = new DBFDataContext(file);
 
         dbfDataContext.executeUpdate(new UpdateScript() {
