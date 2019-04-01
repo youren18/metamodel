@@ -27,15 +27,6 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         }
         dbfFile = file;
         resource = new FileResource(file);
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        //dbfReader = new DBFReader(inputStream);
-
 
     }
 
@@ -80,6 +71,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         for (int i = 0; i < dbfReader.getRecordCount(); ++i){
             object[i] = dbfReader.nextRecord();
         }
+        DBFUtils.close(dbfReader);
         return object;
     }
 
@@ -155,6 +147,7 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
                 rowCount++;
                 listValue.add(new DefaultRow(header,dbfObject));
             }
+            DBFUtils.close(dbfReader);
             return new InMemoryDataSet(header,listValue);
         }
 
@@ -194,15 +187,15 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
         return new DBFReader(inputStream);
     }
 
-    public ColumnType getDBFColumnType(int index){
-        //getDBFReader();
-        return null;
-    }
+
 
     @Override
     protected void finalize() throws Throwable{
         super.finalize();
+
     }
+
+
 
 
     /**

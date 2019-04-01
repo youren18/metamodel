@@ -27,11 +27,13 @@ final class DBFInsertBuilder extends AbstractRowInsertionBuilder<DBFUpdateCallba
 
     @Override
     public RowInsertionBuilder like(Row row){
-        String string[] = new String[row.size()];
+        //String string[] = new String[row.size()];
         for (int i = 0; i < row.size(); ++i){
-            string[i] = row.getValue(i) == null ? "" : row.getValue(i).toString();
+            //string[i] = row.getValue(i) == null ? "" : row.getValue(i).toString();
+            super.value(i,row.getValue(i),row.getStyle(i));
         }
-        getUpdateCallback().writeRow(string, getTable(), true);
+
+        //getUpdateCallback().writeRow(string, getTable(), true);
         return this;
     }
 }

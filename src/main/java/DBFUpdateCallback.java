@@ -12,6 +12,7 @@ import org.apache.metamodel.insert.RowInsertionBuilder;
 import org.apache.metamodel.schema.ColumnType;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
+import org.apache.metamodel.update.RowUpdationBuilder;
 import org.apache.metamodel.util.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -121,6 +122,11 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
         }
     }
 
+
+    @Override
+    public RowUpdationBuilder update(Table table) throws IllegalArgumentException, IllegalStateException{
+        return super.update(table);
+    }
 
     public Resource getResource(){return resource;}
 

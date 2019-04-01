@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -54,7 +55,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
                     while(dataSet.next()){
                         final Row row = dataSet.getRow();
                         if(!deleteRow(row)){
-                            callback.insertInto(copyTable).like(row);
+                            callback.insertInto(copyTable).like(row).execute();
                         }
                     }
                 }finally {
@@ -69,6 +70,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
                 @Override
                 public void run(OutputStream arg) throws Exception {
                     FileHelper.copy(in,arg);
+                    arg.close();
                 }
             });
         }finally {
@@ -77,6 +79,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
 
         if(!file.delete()){
             logger.warn("can not delete temp file");
+            //System.out.println("temp");
         }
 
     }
