@@ -54,7 +54,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
                     while(dataSet.next()){
                         final Row row = dataSet.getRow();
                         if(!deleteRow(row)){
-                            callback.insertInto(copyTable).like(row).execute();
+                            callback.insertInto(copyTable).like(row);
                         }
                     }
                 }finally {

@@ -65,8 +65,11 @@ public class DBFTable extends AbstractTable {
                 columnType = ColumnType.BIGINT;
             } else if (type == DBFDataType.FLOATING_POINT){
                 columnType = ColumnType.DOUBLE;
+            } else if (type == DBFDataType.NUMERIC){
+                columnType = ColumnType.NUMERIC;
             }
-            Column column = new MutableColumn(columnNames.get(i),columnType,this,i,true);
+
+            Column column = new MutableColumn(columnNames.get(i),columnType,this,i,field.getLength(),null,field.isNullable(),null,false,null);
             columns.add(column);
         }
         return columns;

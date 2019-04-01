@@ -51,7 +51,6 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
             dbfWriter = null;
             //dbfWriter.setFields(fields);
             Object object[] = new Object[strings.length];
-
             if(fields == null){
                 fields = new DBFField[strings.length];
                 for (int i = 0; i < strings.length; ++i){
@@ -70,15 +69,20 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
                         fields[i].setType(DBFDataType.LOGICAL);
                     } else if (type == ColumnType.CHAR){
                         fields[i].setType(DBFDataType.CHARACTER);
+                    } else if (type == ColumnType.NUMERIC){
+                        fields[i].setType(DBFDataType.NUMERIC);
+                    } else {
+                        System.out.println("unexpect type");
                     }
-
+                    fields[i].setLength(table.getColumn(i).getColumnSize());
                 }
                 try {
                     dbfWriter = new DBFWriter(new FileOutputStream(file));
+                    dbfWriter.setFields(fields);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                dbfWriter.setFields(fields);
+
             } else {
                 dbfWriter = new DBFWriter(file);
             }
@@ -88,7 +92,11 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
                 if(type == DBFDataType.CHARACTER){
                     object[i] = strings[i];
                 } else if (type == DBFDataType.NUMERIC){
-                    object[i] = new BigDecimal(strings[i]);
+                    if (strings[i].isEmpty()){
+                        object[i] = new BigDecimal(0);
+                    } else {
+                        object[i] = new BigDecimal(strings[i]);
+                    }
                 } else if (type == DBFDataType.FLOATING_POINT){
                     object[i] = new BigDecimal(strings[i]);
                 } else if (type == DBFDataType.LONG){
