@@ -1,3 +1,5 @@
+package org.apache.metamodel.dbf;
+
 import org.apache.metamodel.MetaModelException;
 import org.apache.metamodel.data.Row;
 import org.apache.metamodel.insert.AbstractRowInsertionBuilder;

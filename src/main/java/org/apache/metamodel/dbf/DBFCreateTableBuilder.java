@@ -1,8 +1,7 @@
-import com.linuxense.javadbf.DBFReader;
-import com.linuxense.javadbf.DBFWriter;
+package org.apache.metamodel.dbf;
+
 import org.apache.metamodel.MetaModelException;
 import org.apache.metamodel.create.AbstractTableCreationBuilder;
-import org.apache.metamodel.create.TableCreationBuilder;
 import org.apache.metamodel.schema.Column;
 import org.apache.metamodel.schema.MutableTable;
 import org.apache.metamodel.schema.Schema;
@@ -53,7 +52,7 @@ final class DBFCreateTableBuilder extends AbstractTableCreationBuilder<DBFUpdate
         for (Column column : columns){
             copyTable.addColumn(column);
         }
-        //DBFUpdateCallback updateCallback = getUpdateCallback();
+        //org.apache.metamodel.dbf.DBFUpdateCallback updateCallback = getUpdateCallback();
         //DBFWriter writer
         return this;
     }

@@ -1,3 +1,5 @@
+package org.apache.metamodel.dbf;
+
 import com.linuxense.javadbf.DBFDataType;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFUtils;
@@ -23,7 +25,6 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateCallback{
 

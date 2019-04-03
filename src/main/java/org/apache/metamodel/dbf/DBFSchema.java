@@ -1,3 +1,5 @@
+package org.apache.metamodel.dbf;
+
 import org.apache.metamodel.schema.AbstractSchema;
 import org.apache.metamodel.schema.Table;
 import java.util.ArrayList;

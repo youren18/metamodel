@@ -83,5 +83,5 @@ Class-Path: commons-net-3.6.jar annotations-17.0.0.jar kerb-crypto-1.0
  re2j-1.1.jar hamcrest-core-1.3.jar parent-join-client-5.6.3.jar kerby
  -pkix-1.0.1.jar MetaModel-csv-5.2.0.jar jaxb-api-2.2.9.jar api-util-1
  .0.0-M20.jar
-Main-Class: Hello
+Main-Class: org.apache.metamodel.dbf.Hello
 

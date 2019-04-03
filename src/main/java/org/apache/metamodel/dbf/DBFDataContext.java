@@ -1,3 +1,5 @@
+package org.apache.metamodel.dbf;
+
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFUtils;

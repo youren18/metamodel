@@ -1,4 +1,7 @@
+package org.apache.metamodel.dbf;
+
 import org.apache.metamodel.DataContext;
+import org.apache.metamodel.csv.CsvDataContextFactory;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.data.Row;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
@@ -20,6 +23,7 @@ public class Hello {
             e.printStackTrace();
         }
         DataContextPropertiesImpl dataContextProperties = new DataContextPropertiesImpl(properties);
+        //DataContext myDataContext =  org.apache.metamodel.dbf.DBFDataContextFactory.create();
         DataContext myDataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(dataContextProperties);
         Schema schema = myDataContext.getDefaultSchema();
         Table table = schema.getTable(0);
@@ -55,7 +59,7 @@ public class Hello {
 //        DataContext jsonDataContext = new JsonDataContext(new File(""));
 //        DataContext csvDataContext = new CsvDataContext(new File(""));
         //DataContext excelDataContext = new ExcelDataContext(new File(""));
- //       UpdateableDataContext myDataContext = new DBFDataContext(new File("E:\\gh.dbf"));
+ //       UpdateableDataContext myDataContext = new org.apache.metamodel.dbf.DBFDataContext(new File("E:\\gh.dbf"));
         /*
         Properties properties = new Properties();
         try {
