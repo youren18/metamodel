@@ -4,7 +4,11 @@ public class User
 {
     private int id;
     private String name;
-    public User(){}
+    public User(){
+        id = 0;
+        name = "xiaoming";
+        System.out.println("user");
+    }
 
     public int getId() {
         return id;
