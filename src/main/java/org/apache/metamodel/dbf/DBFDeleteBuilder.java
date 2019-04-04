@@ -28,6 +28,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
     }
 
     /**
+     *
      * Commits the row deletion operation. This operation will delete rows in
      * the {@link DBFDataContext}.
      *
@@ -41,7 +42,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
         dbfDataContext.executeUpdate(new UpdateScript() {
             @Override
             public void run(UpdateCallback callback) {
-                final Table originaltable = getTable();
+                final Table originaltable = getTable();//根据原有table创建新的table
                 final Table copyTable = callback.createTable(dbfDataContext.getDefaultSchema(),originaltable.getName())
                         .like(originaltable)
                         .execute();
@@ -51,11 +52,11 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
                     return;
                 }
                 final DataSet dataSet = dbfUpdateCallback.getDataContext().query().from(originaltable)
-                        .select(originaltable.getColumns()).execute();
+                        .select(originaltable.getColumns()).execute();//查出原来的所有数据
                 try{
                     while(dataSet.next()){
                         final Row row = dataSet.getRow();
-                        if(!deleteRow(row)){
+                        if(!deleteRow(row)){//将不满足删除条件的行插入新的table中
                             callback.insertInto(copyTable).like(row).execute();
                         }
                     }
@@ -65,7 +66,7 @@ final class DBFDeleteBuilder extends AbstractRowDeletionBuilder {
             }
         });
 
-        final InputStream in = FileHelper.getInputStream(file);
+        final InputStream in = FileHelper.getInputStream(file);//最后用新表的数据替换原来文件的数据
         try{
             dbfUpdateCallback.getResource().write(new Action<OutputStream>() {
                 @Override

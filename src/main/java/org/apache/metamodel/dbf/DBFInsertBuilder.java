@@ -12,6 +12,7 @@ final class DBFInsertBuilder extends AbstractRowInsertionBuilder<DBFUpdateCallba
         super(dbfUpdateCallback, table);
     }
     /**
+     * 插入数据，回调writerow函数
      * Commits the row insertion operation. This operation will write the row to
      * the {@link DBFDataContext}.
      *

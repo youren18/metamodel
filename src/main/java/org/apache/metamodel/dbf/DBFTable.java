@@ -45,6 +45,11 @@ public class DBFTable extends AbstractTable {
         return buildColumns(columnHeaders);
     }
 
+    /**
+     * 得到dbf文件的列的属性，包括名称，类型，长度
+     * @param columnNames
+     * @return
+     */
     private List<Column> buildColumns(final List<String> columnNames){
         List<Column> columns = new ArrayList<>();
         for (int i = 0; i < columnNames.size(); ++i){

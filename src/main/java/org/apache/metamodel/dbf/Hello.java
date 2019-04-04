@@ -38,20 +38,8 @@ public class Hello {
             for (Object o : objects){
                 System.out.println(o);
             }
-
         }
         ds.close();
-
-
-
-
-
-
-
-
-
-
-
 
 //        DataContext saleDataContext = new SalesforceDataContext("","");
 //        DataContext mongDataContext = new MongoDbDataContext(new DB(new Mongo(),""));

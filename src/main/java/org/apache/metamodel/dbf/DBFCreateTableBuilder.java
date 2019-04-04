@@ -17,6 +17,8 @@ final class DBFCreateTableBuilder extends AbstractTableCreationBuilder<DBFUpdate
         }
     }
     /**
+     * 创建并返回新的table
+     *
      * Commits the built table and requests that the table structure should be
      * written to the {@link DBFDataContext}.
      *
@@ -41,7 +43,7 @@ final class DBFCreateTableBuilder extends AbstractTableCreationBuilder<DBFUpdate
 
     /**
      * 根据已有的table创建一个新的table，由于dbfreader不能读取空文件eofexception
-     * 因此重写like函数，
+     * 因此重写like函数，将原来table的column属性复制过来
      * @param table
      * @return
      */

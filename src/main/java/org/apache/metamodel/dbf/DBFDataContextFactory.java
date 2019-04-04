@@ -19,6 +19,15 @@ public class DBFDataContextFactory extends AbstractDataContextFactory {
         return "dbf";
     }
 
+    /**
+     * 工厂类，用于调用dbfdatacontext函数，实例化dbfdatacontext函数，
+     * 可以被serviceloader加载，根据配置文件直接创建
+     * @param properties
+     * @param resourceFactoryRegistry
+     * @return
+     * @throws UnsupportedDataContextPropertiesException
+     * @throws ConnectionException
+     */
     @Override
     public  DataContext create(DataContextProperties properties, ResourceFactoryRegistry resourceFactoryRegistry) throws UnsupportedDataContextPropertiesException, ConnectionException {
         assert accepts(properties, resourceFactoryRegistry);

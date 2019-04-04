@@ -127,6 +127,14 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     }
 
+    /**
+     * 遍历table，输出i条数据，i为-1时输出所有数据，
+     * list表示需要的列
+     * @param table
+     * @param list
+     * @param i
+     * @return
+     */
     @Override
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int i) {
         DBFReader dbfReader = getDBFReader();
@@ -155,6 +163,15 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     }
 
+    /**
+     * 遍历table，输出从第first行到第last行的数据，
+     * list为需要的列
+     * @param table
+     * @param list
+     * @param first
+     * @param last
+     * @return
+     */
     @Override
     protected DataSet materializeMainSchemaTable(Table table, List<Column> list, int first, int last){
         final int rows;
@@ -171,6 +188,10 @@ public class DBFDataContext extends QueryPostprocessDataContext implements Updat
 
     }
 
+    /**
+     * 根据file得到dbfreader，用来读取dbf文件的数据
+     * @return
+     */
     protected DBFReader getDBFReader(){
         InputStream inputStream = null;
         try {
