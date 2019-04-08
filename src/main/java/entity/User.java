@@ -1,4 +1,4 @@
-package sx;
+package entity;
 
 public class User
 {

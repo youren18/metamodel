@@ -1,45 +1,43 @@
 package org.apache.metamodel.dbf;
 
+import connect.Connect;
+import entity.Stu;
+import mapper.Mapper;
 import org.apache.metamodel.DataContext;
-import org.apache.metamodel.csv.CsvDataContextFactory;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.data.Row;
-import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
-import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.query.Query;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import proxy.ProxyMapper;
+
+import java.util.List;
+
 
 public class Hello {
     public static void main(String[] args) {
 
-        Properties properties = new Properties();
-        try {
-            properties.load(new FileInputStream("E:\\code\\java\\sd\\src\\main\\resources\\myconnect.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        DataContextPropertiesImpl dataContextProperties = new DataContextPropertiesImpl(properties);
-        //DataContext myDataContext =  org.apache.metamodel.dbf.DBFDataContextFactory.create();
-        DataContext myDataContext = DataContextFactoryRegistryImpl.getDefaultInstance().createDataContext(dataContextProperties);
-        Schema schema = myDataContext.getDefaultSchema();
-        Table table = schema.getTable(0);
+//        Mapper mapper = ProxyMapper.getMapper(Mapper.class);
+//        Stu stus = mapper.findone(2);
+//        System.out.println(stus.toString());
 
-        Query query = myDataContext.query().from(table).select("*").where("id").eq(2).toQuery();
-        System.out.println(query.toString());
-
-        DataSet ds = myDataContext.executeQuery(query);
-        while(ds.next()){
-            Row row = ds.getRow();
-            Object[] objects = row.getValues();
-            for (Object o : objects){
-                System.out.println(o);
-            }
-        }
-        ds.close();
+//        DataContext myDataContext = new Connect().createConnect("E:\\code\\java\\sd\\src\\main\\resources\\myconnect.properties");
+//        Schema schema = myDataContext.getDefaultSchema();
+//        Table table = schema.getTable(0);
+//
+//        Query query = myDataContext.query().from(table).select("*").where("id").eq(2).toQuery();
+//
+//        System.out.println(query.toString());
+//
+//        DataSet ds = myDataContext.executeQuery(query);
+//        while(ds.next()){
+//            Row row = ds.getRow();
+//            Object[] objects = row.getValues();
+//            for (Object o : objects){
+//                System.out.println(o);
+//            }
+//        }
+//        ds.close();
 
 //        DataContext saleDataContext = new SalesforceDataContext("","");
 //        DataContext mongDataContext = new MongoDbDataContext(new DB(new Mongo(),""));
