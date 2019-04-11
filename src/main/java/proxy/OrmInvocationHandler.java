@@ -1,6 +1,9 @@
 package proxy;
 
+import annotation.Delete;
+import annotation.Insert;
 import annotation.Query;
+import annotation.Update;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -17,18 +20,9 @@ public class OrmInvocationHandler implements InvocationHandler {
      * when a method is invoked on a proxy instance that it is
      * associated with.
      *
-     * @param proxy  the proxy instance that the method was invoked on
-     * @param method the {@code Method} instance corresponding to
-     *               the interface method invoked on the proxy instance.  The declaring
-     *               class of the {@code Method} object will be the interface that
-     *               the method was declared in, which may be a superinterface of the
-     *               proxy interface that the proxy class inherits the method through.
-     * @param args   an array of objects containing the values of the
-     *               arguments passed in the method invocation on the proxy instance,
-     *               or {@code null} if interface method takes no arguments.
-     *               Arguments of primitive types are wrapped in instances of the
-     *               appropriate primitive wrapper class, such as
-     *               {@code java.lang.Integer} or {@code java.lang.Boolean}.
+     * @param proxy  表示动态代理的目标对象
+     * @param method 代表要执行的方法
+     * @param args   方法的参数数组
      * @return the value to return from the method invocation on the
      * proxy instance.  If the declared return type of the interface
      * method is a primitive type, then the value returned by
@@ -55,13 +49,25 @@ public class OrmInvocationHandler implements InvocationHandler {
      *                   exception that was thrown by this method will be thrown by the
      *                   method invocation on the proxy instance.
      * @see UndeclaredThrowableException
+     *
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        boolean queryFlag = method.isAnnotationPresent(Query.class);
-        if(queryFlag){
+        //已经实现的类，不做处理
+        if(Object.class.equals(method.getDeclaringClass())){
+            return method.invoke(proxy, args);
+        }
+        if(method.isAnnotationPresent(Query.class)){//对于查询注解，调用处理查询函数
             Query query = method.getDeclaredAnnotation(Query.class);
-            return AnnoationHandler.handlerQuery(method, args);
+            if(query != null)
+                return AnnoationHandler.handlerQuery(method, args);
+            return null;
+        } else if (method.isAnnotationPresent(Insert.class)){//根据插入注解调用插入处理函数
+            return AnnoationHandler.handleInsertOne(method, args);
+        } else if (method.isAnnotationPresent(Delete.class)){//根据删除注解调用删除处理函数
+            return AnnoationHandler.handleDelete(method, args);
+        } else if (method.isAnnotationPresent(Update.class)){//根据更新注解调用更新处理函数
+            return AnnoationHandler.handleUpdate(method, args);
         }
 
         return null;

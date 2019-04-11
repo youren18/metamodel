@@ -24,6 +24,16 @@ public class Stu {
                 " }";
     }
 
+    public Stu(int i, String s, int a){
+        id = i;
+        name = s;
+        age = a;
+
+    }
+    public Stu(){
+
+    }
+
     public void setId(int id) {
         this.id = id;
     }
