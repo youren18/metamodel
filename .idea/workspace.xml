@@ -7,11 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38956a9e-241a-4208-8d3e-87d325f631e3" name="Default" comment="dbf simple query">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mapper/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mapper/Mapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/apache/metamodel/dbf/DBF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/apache/metamodel/dbf/DBF.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/proxy/AnnoationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/proxy/AnnoationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/DBFTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/DBFTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -45,8 +41,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/proxy/AnnoationHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="636">
-              <caret line="73" column="38" selection-start-line="73" selection-start-column="38" selection-end-line="73" selection-end-column="38" />
+            <state relative-caret-position="216">
+              <caret line="74" column="35" selection-start-line="74" selection-start-column="35" selection-end-line="74" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -76,7 +72,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/mapper/Mapper.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
-              <caret line="14" column="31" lean-forward="true" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+              <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -88,7 +84,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/proxy/OrmInvocationHandler.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="54">
-              <caret line="54" column="20" lean-forward="true" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="20" />
+              <caret line="54" column="20" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -372,7 +368,7 @@
     <property name="DatabaseDriversLRU" value="oracle&#10;mysql" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555061507289" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555061526190" />
     <property name="database.console.LAST_STATE" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
@@ -498,8 +494,8 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.DBFTest.testInsert" />
       <item itemvalue="Application.DBF" />
+      <item itemvalue="JUnit.DBFTest.testInsert" />
       <item itemvalue="JUnit.DBFTest.testDelete" />
       <item itemvalue="JUnit.DBFTest.testUpdate" />
       <item itemvalue="JUnit.DBFTest.testFind" />
@@ -557,7 +553,7 @@
       <workItem from="1554772009313" duration="11626000" />
       <workItem from="1554865606353" duration="38000" />
       <workItem from="1554945515107" duration="18045000" />
-      <workItem from="1555031423109" duration="21776000" />
+      <workItem from="1555031423109" duration="22957000" />
     </task>
     <task id="LOCAL-00001" summary="dbf simple query">
       <created>1553155859548</created>
@@ -602,7 +598,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="364571000" />
+    <option name="totallyTimeSpent" value="365752000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -628,7 +624,7 @@
       <window_info id="Web" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49394855" visible="true" weight="0.20130932" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49394855" visible="true" weight="0.24549918" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -792,7 +788,7 @@
           <caret line="191" column="37" selection-start-line="191" selection-start-column="37" selection-end-line="191" selection-end-column="37" />
           <folding>
             <element signature="method#materializeMainSchemaTable#1;class#DBFDataContext#0" />
-            <marker date="1554344448150" expanded="false" signature="2322:3990" ph="..." />
+            <marker date="1555061607352" expanded="false" signature="2322:3990" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1119,7 +1115,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/mapper/Mapper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
-          <caret line="14" column="31" lean-forward="true" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1143,7 +1139,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/proxy/OrmInvocationHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
-          <caret line="54" column="20" lean-forward="true" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="20" />
+          <caret line="54" column="20" selection-start-line="54" selection-start-column="20" selection-end-line="54" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1162,8 +1158,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/proxy/AnnoationHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="636">
-          <caret line="73" column="38" selection-start-line="73" selection-start-column="38" selection-end-line="73" selection-end-column="38" />
+        <state relative-caret-position="216">
+          <caret line="74" column="35" selection-start-line="74" selection-start-column="35" selection-end-line="74" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -60,7 +61,7 @@ public class AnnoationHandler {
         Class<?> returnType = method.getReturnType();//得到返回类型
         DataSet set = dataContext.executeQuery(query1);
 
-        List<Object> returnObject = getResult(set, returnType);
+        List<Object> returnObject = getResult(set, method);
         if (!returnType.getName().contains("java.util.List")){
             return returnObject.get(0);
         }
@@ -68,10 +69,20 @@ public class AnnoationHandler {
 
     }
 
-    private static List<Object> getResult(DataSet set, Class<?> returnType){
+    private static List<Object> getResult(DataSet set, Method method){
         try {
+            Class<?> returnType = method.getReturnType();
+            Type type = method.getGenericReturnType();
+            if(type instanceof ParameterizedType){
+                Type[] actualTypeArguments = ((ParameterizedType)type).getActualTypeArguments();
+                for (Type type1 : actualTypeArguments) {
+                    System.out.println(type1);
+                }
+
+            }
+
             List<Object> result = new LinkedList<>();
-            System.out.println(returnType.getName());
+
             Object object = returnType.newInstance();
 
             while(set.next()){
