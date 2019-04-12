@@ -15,10 +15,13 @@ public class DBFTest {
     @Test
     public void testFind(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
-        Stu stu = mapper.findone(2);
-        System.out.println(stu.toString());
-        stu = mapper.findone(1);
-        System.out.println(stu.toString());
+        //Stu stu = mapper.findone(2);
+        //System.out.println(stu.toString());
+        List<Stu> stus = mapper.findAll(111);
+        for (Stu s : stus){
+            System.out.println(s.toString());
+        }
+
 //        List<Stu> stus = mapper.findAll();
 //        for (Stu temp : stus){
 //            System.out.println(temp);
@@ -29,16 +32,16 @@ public class DBFTest {
     public void testInsert(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
         Stu stu = new Stu();
-        stu.setId(100);
-        stu.setAge(101);
-        stu.setName("jerryjo");
-        System.out.println(mapper.insertStu(stu));
+        stu.setId(2);
+        stu.setAge(11);
+        stu.setName("jerry");
+        mapper.insertStu(stu);
     }
 
     @Test
     public void testDelete(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
-        System.out.println(mapper.deleteStuById(1));
+        mapper.deleteStuById(2);
     }
     @Test
     public void testMybatisInsert(){
@@ -47,5 +50,11 @@ public class DBFTest {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         mapper.insertT(new Stu(10,"he",2));
         sqlSession.close();
+    }
+
+    @Test
+    public void testUpdate(){
+        Mapper mapper = ProxyMapper.getMapper(Mapper.class);
+        mapper.updateStubyid("tony", 12, 2);
     }
 }

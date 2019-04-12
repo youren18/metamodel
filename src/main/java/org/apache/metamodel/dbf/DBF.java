@@ -8,10 +8,15 @@ import com.linuxense.javadbf.DBFWriter;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class DBF {
     public static void main(String[] args) {
+        String sql = "delete from stu";
+
+
 //        Properties properties = new Properties();
 //        try {
 //            properties.load(new FileInputStream("E:\\code\\java\\sd\\src\\main\\resources\\myconnect.properties"));

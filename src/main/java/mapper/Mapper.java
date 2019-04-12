@@ -11,6 +11,10 @@ public interface Mapper {
     Stu findone(int id);
 
     @Table(tableName = "stu")
+    @Query(query = "select * from stu where age = ?")
+    List<Stu> findAll(int age);
+
+    @Table(tableName = "stu")
     @Query(query = "select * from stu")
     List<Stu> findAll();
 
@@ -23,6 +27,6 @@ public interface Mapper {
     int deleteStuById(int id);
 
     @Table(tableName = "stu")
-    @Update(update = "update stu set name = 'hello' where id = ?")
-    int updateStubyid(int id);
+    @Update(update = "update stu set name = ? , age = ? where id = ?")
+    int updateStubyid(String name, int age, int id);
 }
