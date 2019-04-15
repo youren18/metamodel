@@ -61,7 +61,7 @@ public class AnnoationHandler {
         Class<?> returnType = method.getReturnType();//得到返回类型
         DataSet set = dataContext.executeQuery(query1);
 
-        List<Object> returnObject = getResult(set, method);
+        List<Object> returnObject = getResult(set, method, table);
         if (!returnType.getName().contains("java.util.List")){
             return returnObject.get(0);
         }
@@ -69,39 +69,41 @@ public class AnnoationHandler {
 
     }
 
-    private static List<Object> getResult(DataSet set, Method method){
+    private static List<Object> getResult(DataSet set, Method method, Table table){
         try {
-            Class<?> returnType = method.getReturnType();
-            Type type = method.getGenericReturnType();
-            if(type instanceof ParameterizedType){
-                Type[] actualTypeArguments = ((ParameterizedType)type).getActualTypeArguments();
-                for (Type type1 : actualTypeArguments) {
-                    System.out.println(type1);
-                }
 
+            Type genericReturnType = method.getGenericReturnType();
+            Type type = null;
+            if(genericReturnType instanceof ParameterizedType){
+                Type[] actualTypeArguments = ((ParameterizedType)genericReturnType).getActualTypeArguments();
+                type = actualTypeArguments[0];
+
+                //System.out.println(type1);
             }
 
             List<Object> result = new LinkedList<>();
-
-            Object object = returnType.newInstance();
-
+            //Object object = returnType.newInstance();
+            if(type == null){
+                type = method.getReturnType();
+            }
+            System.out.println(type);
             while(set.next()){
-                Field[] declaredField = returnType.getDeclaredFields();
-                int i = 0;
+                Object object = Class.forName(String.valueOf(type).substring(6)).newInstance();
+                Field[] declaredField = object.getClass().getDeclaredFields();
                 for (Field field : declaredField){
                     String fieldName = field.getName();
-
-                    Object fieldValue = set.getRow().getValue(i);
+                    //System.out.println(fieldName);
+                    String columnName = field.getDeclaredAnnotation(Column.class).columnValue();
+                    org.apache.metamodel.schema.Column column = table.getColumnByName(columnName);
+                    Object fieldValue = set.getRow().getValue(column);
                     field.setAccessible(true);
                     field.set(object,fieldValue);
-                    i++;
                 }
+                result.add(object);
             }
-            result.add(object);
+
            return result;
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;

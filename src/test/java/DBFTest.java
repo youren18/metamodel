@@ -15,12 +15,12 @@ public class DBFTest {
     @Test
     public void testFind(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
-        //Stu stu = mapper.findone(2);
-        //System.out.println(stu.toString());
-        List<Stu> stus = mapper.findAll(111);
-        for (Stu s : stus){
-            System.out.println(s.toString());
-        }
+        Stu stu = mapper.findone(2);
+        System.out.println(stu.toString());
+        //List<Stu> stus = mapper.findAll(111);
+        //for (Stu s : stus){
+           // System.out.println(s.toString());
+        //}
 
 //        List<Stu> stus = mapper.findAll();
 //        for (Stu temp : stus){
