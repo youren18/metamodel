@@ -15,7 +15,7 @@ public class DBFTest {
     @Test
     public void testFind(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
-        Stu stu = mapper.findone(2);
+        Stu stu = mapper.findone(20);
         System.out.println(stu.toString());
         //List<Stu> stus = mapper.findAll(111);
         //for (Stu s : stus){
@@ -32,9 +32,9 @@ public class DBFTest {
     public void testInsert(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
         Stu stu = new Stu();
-        stu.setId(2);
+        stu.setId(20);
         stu.setAge(11);
-        stu.setName("jerry");
+
         mapper.insertStu(stu);
     }
 

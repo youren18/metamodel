@@ -2,7 +2,6 @@ package mapper;
 
 import annotation.*;
 import entity.Stu;
-
 import java.util.List;
 
 public interface Mapper {

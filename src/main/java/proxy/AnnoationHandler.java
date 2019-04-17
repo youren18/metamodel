@@ -11,7 +11,6 @@ import org.apache.metamodel.UpdateScript;
 import org.apache.metamodel.UpdateableDataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.delete.RowDeletionBuilder;
-import org.apache.metamodel.insert.InsertInto;
 import org.apache.metamodel.insert.RowInsertionBuilder;
 import org.apache.metamodel.query.builder.SatisfiedSelectBuilder;
 import org.apache.metamodel.schema.Schema;
@@ -40,7 +39,7 @@ public class AnnoationHandler {
     @Nullable
     public static Object handlerQuery(Method method, Object[] objects){
         Query query = method.getDeclaredAnnotation(Query.class);
-        String selectSQL = query.query();//得到sql语句
+        String selectSQL = query.query();//得到注解sql语句
         if (selectSQL.isEmpty()){
             throw new IllegalArgumentException("expect sql in @Query");
         }
@@ -69,6 +68,13 @@ public class AnnoationHandler {
 
     }
 
+    /**
+     * 将查询的结果变为具体的对象
+     * @param set 查询操作的结果
+     * @param method 查询的具体方法
+     * @param table 查询涉及到的表
+     * @return 具体的结果的对象构成的list
+     */
     private static List<Object> getResult(DataSet set, Method method, Table table){
         try {
 
@@ -77,7 +83,6 @@ public class AnnoationHandler {
             if(genericReturnType instanceof ParameterizedType){
                 Type[] actualTypeArguments = ((ParameterizedType)genericReturnType).getActualTypeArguments();
                 type = actualTypeArguments[0];
-
                 //System.out.println(type1);
             }
 
@@ -101,7 +106,6 @@ public class AnnoationHandler {
                 }
                 result.add(object);
             }
-
            return result;
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -110,9 +114,9 @@ public class AnnoationHandler {
     }
 
     /**
-     *
-     * @param method
-     * @param objects
+     *处理插入操作，可以一次插入一个对象
+     * @param method 具体的方法
+     * @param objects 插入的对象
      * @return
      */
     public static int handleInsertOne(Method method, Object[] objects){
@@ -200,7 +204,6 @@ public class AnnoationHandler {
                     builder.where(whereColumn.get(i)).eq(objects[i+setColumn.size()]);
                 }
 
-
                 builder.execute();
             }
         });
@@ -227,9 +230,9 @@ public class AnnoationHandler {
     }
 
     /**
-     *
-     * @param sql 传入delete注解中的sql语句
-     * @return 提取出delete中涉及到的列名并返回
+     *解析sql语句，
+     * @param sql 传入注解中的sql语句
+     * @return 提取出sql中where涉及到的列名并返回
      */
     private static List<String> getWhereColumnName(String sql){
         int indexOfWhere = sql.indexOf("where");
@@ -262,15 +265,16 @@ public class AnnoationHandler {
 
     /**
      * 提取出sql语句中set的列名
-     * @param sql
+     * @param sql sql语句
      * @return
      */
     private static List<String> getSetColumnName(String sql){
-        int indexOfSet = sql.indexOf("set") + 3;
+        int indexOfSet = sql.indexOf("set");
         int indexOfWhere = sql.indexOf("where");
-        if(indexOfSet == -1){
+        if(indexOfSet  == -1){
             throw new IllegalArgumentException("expect set in " + sql);
         }
+        indexOfSet += 3;
         if (indexOfSet < indexOfWhere){
             sql = sql.substring(indexOfSet, indexOfWhere);
         } else {
@@ -293,6 +297,4 @@ public class AnnoationHandler {
         }
         return result;
     }
-
-
 }
