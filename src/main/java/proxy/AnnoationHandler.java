@@ -2,7 +2,6 @@ package proxy;
 
 import annotation.Column;
 import annotation.Delete;
-import annotation.Query;
 import annotation.Update;
 import connect.Connect;
 import org.apache.metamodel.DataContext;
@@ -12,6 +11,7 @@ import org.apache.metamodel.UpdateableDataContext;
 import org.apache.metamodel.data.DataSet;
 import org.apache.metamodel.delete.RowDeletionBuilder;
 import org.apache.metamodel.insert.RowInsertionBuilder;
+import org.apache.metamodel.query.Query;
 import org.apache.metamodel.query.builder.SatisfiedSelectBuilder;
 import org.apache.metamodel.schema.Schema;
 import org.apache.metamodel.schema.Table;
@@ -38,8 +38,7 @@ public class AnnoationHandler {
      */
     @Nullable
     public static Object handlerQuery(Method method, Object[] objects){
-        Query query = method.getDeclaredAnnotation(Query.class);
-        String selectSQL = query.query();//得到注解sql语句
+        String selectSQL = method.getDeclaredAnnotation(annotation.Query.class).value();//得到注解sql语句
         if (selectSQL.isEmpty()){
             throw new IllegalArgumentException("expect sql in @Query");
         }
@@ -56,16 +55,15 @@ public class AnnoationHandler {
         for (int i = 0; i < selectColumn.size(); ++i){
             queryBuild.where(selectColumn.get(i)).eq(objects[i]);
         }
-        org.apache.metamodel.query.Query query1 = queryBuild.toQuery();
+        Query query = queryBuild.toQuery();
         Class<?> returnType = method.getReturnType();//得到返回类型
-        DataSet set = dataContext.executeQuery(query1);
+        DataSet set = dataContext.executeQuery(query);
 
         List<Object> returnObject = getResult(set, method, table);
         if (!returnType.getName().contains("java.util.List")){
-            return returnObject.get(0);
+            return returnObject != null ? returnObject.get(0) : null;
         }
         return returnObject;
-
     }
 
     /**
@@ -77,7 +75,6 @@ public class AnnoationHandler {
      */
     private static List<Object> getResult(DataSet set, Method method, Table table){
         try {
-
             Type genericReturnType = method.getGenericReturnType();
             Type type = null;
             if(genericReturnType instanceof ParameterizedType){
@@ -91,14 +88,14 @@ public class AnnoationHandler {
             if(type == null){
                 type = method.getReturnType();
             }
-            System.out.println(type);
+
             while(set.next()){
                 Object object = Class.forName(String.valueOf(type).substring(6)).newInstance();
                 Field[] declaredField = object.getClass().getDeclaredFields();
                 for (Field field : declaredField){
-                    String fieldName = field.getName();
+
                     //System.out.println(fieldName);
-                    String columnName = field.getDeclaredAnnotation(Column.class).columnValue();
+                    String columnName = field.getDeclaredAnnotation(Column.class).value();
                     org.apache.metamodel.schema.Column column = table.getColumnByName(columnName);
                     Object fieldValue = set.getRow().getValue(column);
                     field.setAccessible(true);
@@ -130,7 +127,7 @@ public class AnnoationHandler {
                 Field[] fields = objects[0].getClass().getDeclaredFields();
                 for (int j = 0; j < fields.length; ++j){
                     try {
-                        String name = fields[j].getDeclaredAnnotation(Column.class).columnValue();
+                        String name = fields[j].getDeclaredAnnotation(Column.class).value();
                         fields[j].setAccessible(true);
                         Object val = fields[j].get(objects[0]);
                         builder.value(name,val);
@@ -158,7 +155,7 @@ public class AnnoationHandler {
             @Override
             public void run(UpdateCallback callback) {
                 RowDeletionBuilder builder = callback.deleteFrom(table);//构造删除的sql
-                String sql = method.getDeclaredAnnotation(Delete.class).delete();
+                String sql = method.getDeclaredAnnotation(Delete.class).value();
                 if (sql.isEmpty()){
                     throw new IllegalArgumentException("expect a sql in @Delete");
                 }
@@ -190,7 +187,7 @@ public class AnnoationHandler {
             @Override
             public void run(UpdateCallback callback) {
                 RowUpdationBuilder builder = callback.update(table);
-                String sql = method.getDeclaredAnnotation(Update.class).update();
+                String sql = method.getDeclaredAnnotation(Update.class).value();
                 List<String> setColumn = getSetColumnName(sql);
                 List<String> whereColumn = getWhereColumnName(sql);
                 if(setColumn.size() + whereColumn.size() != objects.length){
@@ -220,13 +217,25 @@ public class AnnoationHandler {
      */
     private static Table getTable(Method method, Schema schema){
         Table table = null;
+//        String tableName = null;
+//        if (method.isAnnotationPresent(annotation.Query.class)) {
+//            tableName =
+//        }
+
+
         if (method.isAnnotationPresent(annotation.Table.class)){
-            String tableName = method.getAnnotation(annotation.Table.class).tableName();
+            String tableName = method.getAnnotation(annotation.Table.class).value();
             table = schema.getTableByName(tableName);
         } else {
             table = schema.getTable(0);
         }
         return table;
+    }
+
+    String getQuerySqlTableName(String sql){
+        int indexOfFrom = sql.indexOf("from");
+        int indexOfWhere = sql.indexOf("where");
+        return sql.substring(indexOfFrom + 4, indexOfWhere).trim();
     }
 
     /**

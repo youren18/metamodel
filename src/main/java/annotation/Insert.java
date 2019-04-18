@@ -6,5 +6,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Insert {
-    public String insert() default "";
+    public String value() default "";
 }

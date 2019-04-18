@@ -7,6 +7,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface Table {
 
-    public String tableName() default "";
+    public String value() default "";
 
 }

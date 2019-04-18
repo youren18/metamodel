@@ -1,13 +1,19 @@
 package entity;
 
+import annotation.Column;
+
 public class User
 {
+    @Column("ids")
     private int id;
+    @Column("name")
     private String name;
     public User(){
-        id = 0;
-        name = "xiaoming";
-        System.out.println("user");
+
+    }
+
+    public String toString(){
+        return "User:{ id = " + id + " , name = " + name + " }";
     }
 
     public int getId() {

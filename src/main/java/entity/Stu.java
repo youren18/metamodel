@@ -3,16 +3,16 @@ package entity;
 import annotation.Column;
 import annotation.Table;
 
-@Table(tableName = "stu")
+@Table("stu")
 public class Stu {
 
-    @Column(columnValue = "id")
+    @Column("id")
     private int id;
 
-    @Column(columnValue = "name")
+    @Column("name")
     private String name;
 
-    @Column(columnValue = "age")
+    @Column("age")
     private int age;
 
     @Override
