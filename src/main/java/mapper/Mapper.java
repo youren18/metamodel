@@ -11,7 +11,7 @@ public interface Mapper {
     Stu findone(int id);
 
     @Table("stu")
-    @Query("select * from stu where age = ?")
+    @Query("select * from stu where age > ?")
     List<Stu> findAll(int age);
 
     @Table("stu")

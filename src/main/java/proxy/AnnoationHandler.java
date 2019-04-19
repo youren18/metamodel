@@ -54,6 +54,7 @@ public class AnnoationHandler {
             table = schema.getTable(0);
         }
         List<String> selectColumn = sqlUtil.getWhereColumnNames();//得到where需要的列名
+        List<String> operator = sqlUtil.getOperator();
 
         SatisfiedSelectBuilder queryBuild = dataContext.query().from(table).select("*");
 
@@ -62,7 +63,14 @@ public class AnnoationHandler {
         }
         //将列名与参数一一对应插入metamodel的查询sql中
         for (int i = 0; i < selectColumn.size(); ++i) {
-            queryBuild.where(selectColumn.get(i)).eq(objects[i]);
+            if (operator.get(i).equals("=")){
+                queryBuild.where(selectColumn.get(i)).eq(objects[i]);
+            } else if (operator.get(i).equals(">")) {
+                queryBuild.where(selectColumn.get(i)).gt(objects[i]);
+            } else if (operator.get(i).equals("<")){
+                queryBuild.where(selectColumn.get(i)).lt(objects[i]);
+            }
+
         }
         Query query = queryBuild.toQuery();
         Class<?> returnType = method.getReturnType();//得到返回类型

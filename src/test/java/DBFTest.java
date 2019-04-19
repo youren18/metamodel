@@ -40,8 +40,10 @@ public class DBFTest {
 //        System.out.println(mapper.selectUser(1));
 
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
-        Stu stu = mapper.findone(22);
-        System.out.println(stu.toString());
+        List<Stu> stu = mapper.findAll(12);
+        for (Stu s : stu){
+            System.out.println(s.toString());
+        }
 //        List<Stu> stus = mapper.findAll(111);
 //        for (Stu s : stus){
 //            System.out.println(s.toString());

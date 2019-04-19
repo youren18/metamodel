@@ -17,6 +17,7 @@ public class SqlUtil {
         tables = new LinkedList<>();
         whereColumnNames = new LinkedList<>();
         setColumnNames = new LinkedList<>();
+        operator = new LinkedList<>();
         sql = s;
         String[] tokens = s.split("[\\s|,]+");
 //        System.out.println("tokens");
@@ -95,8 +96,13 @@ public class SqlUtil {
         for (int i = indexOfWhere; i < tokens.length; ++i){
             if (tokens[i].equals("where") || tokens[i].equals("and")){
                 whereColumnNames.add(tokens[i + 1]);
+                operator.add(tokens[i + 2]);
             }
         }
+    }
+
+    public List<String> getOperator(){
+        return operator;
     }
 
     public List<String> getSetColumnNames() {
