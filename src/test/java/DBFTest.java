@@ -1,5 +1,6 @@
 import Util.MybatisUtil;
 import entity.Stu;
+import entity.User;
 import mapper.Mapper;
 
 import mapper.UserMapper;
@@ -7,8 +8,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import proxy.ProxyMapper;
-import proxy.SqlUtil;
+import executor.SqlUtil;
 
+import java.util.Date;
 import java.util.List;
 
 public class DBFTest {
@@ -59,11 +61,12 @@ public class DBFTest {
     public void testInsert(){
         Mapper mapper = ProxyMapper.getMapper(Mapper.class);
         Stu stu = new Stu();
-        stu.setId(22);
+        stu.setId(23);
         stu.setAge(11);
         stu.setName("name");
-
         mapper.insertStu(stu);
+
+
     }
 
     @Test
@@ -80,10 +83,18 @@ public class DBFTest {
 
     @Test
     public void testMybatisInsert(){
+
         SqlSessionFactory factory = MybatisUtil.getFactory();
         SqlSession sqlSession = factory.openSession(true);
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        //mapper.insertT(new Stu(10,"he",2));
+        //mapper.insertT(new User(11,"he11"));
+        Date firstDate = new Date();
+        User user = mapper.selectUser(10);
+        Date secondDate = new Date();
+        user = mapper.selectUser(10);
+        System.out.println(user.toString());
+        System.out.println(secondDate.getTime() - firstDate.getTime());
+        System.out.println(new Date().getTime() - secondDate.getTime());
         sqlSession.close();
     }
 

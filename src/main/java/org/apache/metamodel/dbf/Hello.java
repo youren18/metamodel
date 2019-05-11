@@ -116,7 +116,7 @@ public class Hello {
         Configuration configuration = new Configuration();
         configuration.configure();
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.openSession();
+        session session = sessionFactory.openSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
         session.save(user);

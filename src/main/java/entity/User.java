@@ -1,31 +1,35 @@
 package entity;
 
-import annotation.Column;
+
 
 public class User
 {
-    @Column("ids")
-    private int id;
-    @Column("name")
+    private int ids;
+
     private String name;
     public User(){
 
     }
 
-    public String toString(){
-        return "User:{ id = " + id + " , name = " + name + " }";
+    public User(int id, String name){
+        this.ids = id;
+        this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public String toString(){
+        return "User:{ id = " + ids + " , name = " + name + " }";
+    }
+
+    public int getIds() {
+        return ids;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIds(int ids) {
+        this.ids = ids;
     }
 
     public void setName(String name) {

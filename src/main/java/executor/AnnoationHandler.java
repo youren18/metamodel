@@ -1,4 +1,4 @@
-package proxy;
+package executor;
 
 import annotation.Column;
 import annotation.Delete;
@@ -23,7 +23,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

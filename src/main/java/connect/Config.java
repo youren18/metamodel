@@ -1,5 +1,7 @@
 package connect;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class Config {
@@ -10,24 +12,31 @@ public class Config {
     private static final String PRO_DRIVER = "driver";
     private static final String PRO_RESOURCE = "resource";
 
+    private String resource;
     private final Map<String, Object> map;
 
     public Config(Properties properties){
         this();
         //final Set<String> propertyNames = properties.stringPropertyNames();
-        Enumeration en = properties.propertyNames();
-        while(en.hasMoreElements()){
-            String key = en.nextElement().toString();
-            map.put(key, properties.getProperty(key));
-        }
-
+        update(properties);
     }
+
+    public Config(String resource){
+        this();
+        this.resource = resource;
+        Properties properties = getProperties(resource);
+        update(properties);
+    }
+
+
+
 
     public Config(){
        this(new HashMap<String, Object>());
     }
 
     public Config(Map<String, Object> map){
+        resource = null;
         this.map = map;
     }
 
@@ -37,6 +46,22 @@ public class Config {
             return null;
         }
         return object.toString();
+    }
+
+    private void update(Properties properties){
+
+    }
+
+    private Properties getProperties(String filePath)
+    {
+        InputStream in = Connect.class.getResourceAsStream(filePath);
+        Properties properties = new Properties();
+        try {
+            properties.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
     }
 
     public String getType(){
