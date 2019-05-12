@@ -18,7 +18,7 @@ public class Session{
         executor = new Executor();
     }
 
-    public <T> T query(Method method, Object[] args){
+    public Object query(Method method, Object[] args){
 
         return executor.query(method, args);
     }

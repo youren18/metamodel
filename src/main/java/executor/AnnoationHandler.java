@@ -37,8 +37,16 @@ public class AnnoationHandler {
      * @param objects 查询时使用的参数
      * @return
      */
+
+    public <T> T handlerQueryOne(Method method, Object[] objects) {
+        List<T> result = handlerQueryList(method, objects);
+
+        return result.get(0);
+    }
+
+
     @Nullable
-    public static Object handlerQuery(Method method, Object[] objects) {
+    public <T> List<T> handlerQueryList(Method method, Object[] objects) {
         String selectSQL = method.getDeclaredAnnotation(annotation.Query.class).value();//得到注解sql语句
         if (selectSQL.isEmpty()) {
             throw new IllegalArgumentException("expect sql in @Query");
@@ -72,13 +80,11 @@ public class AnnoationHandler {
 
         }
         Query query = queryBuild.toQuery();
-        Class<?> returnType = method.getReturnType();//得到返回类型
+
         DataSet set = dataContext.executeQuery(query);
 
-        List<Object> returnObject = getResult(set, method, table);
-        if (!returnType.getName().contains("java.util.List")) {
-            return returnObject != null ? returnObject.get(0) : null;
-        }
+        List<T> returnObject = getResult(set, method, table);
+
         return returnObject;
     }
 
@@ -90,7 +96,7 @@ public class AnnoationHandler {
      * @param table  查询涉及到的表
      * @return 具体的结果的对象构成的list
      */
-    private static List<Object> getResult(DataSet set, Method method, Table table) {
+    private <T> List<T> getResult(DataSet set, Method method, Table table) {
         try {
             Type genericReturnType = method.getGenericReturnType();
             Type type = null;
@@ -100,7 +106,7 @@ public class AnnoationHandler {
                 //System.out.println(type1);
             }
 
-            List<Object> result = new LinkedList<>();
+            List<T> result = new LinkedList<>();
             //Object object = returnType.newInstance();
             if (type == null) {
                 type = method.getReturnType();
@@ -119,7 +125,7 @@ public class AnnoationHandler {
 
                     field.set(object, fieldValue);
                 }
-                result.add(object);
+                result.add( (T) object);
             }
             return result;
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
@@ -134,7 +140,7 @@ public class AnnoationHandler {
      * @param objects 插入的对象
      * @return
      */
-    public static int handleInsertOne(Method method, Object[] objects) {
+    public int handleInsertOne(Method method, Object[] objects) {
         UpdateableDataContext updateableDataContext = Connect.createUpdateContext();
         Schema schema = updateableDataContext.getDefaultSchema();
         SqlUtil sqlUtil = new SqlUtil(method.getDeclaredAnnotation(Insert.class).value());
@@ -168,7 +174,7 @@ public class AnnoationHandler {
      * @param objects 删除sql中用到的参数
      * @return
      */
-    public static int handleDelete(Method method, Object[] objects) {
+    public int handleDelete(Method method, Object[] objects) {
         UpdateableDataContext dataContext = Connect.createUpdateContext();
         Schema schema = dataContext.getDefaultSchema();
         SqlUtil sqlUtil = new SqlUtil(method.getDeclaredAnnotation(Delete.class).value());
@@ -202,7 +208,7 @@ public class AnnoationHandler {
      * @param objects 参数
      * @return
      */
-    public static int handleUpdate(Method method, Object[] objects) {
+    public int handleUpdate(Method method, Object[] objects) {
         UpdateableDataContext dataContext = Connect.createUpdateContext();
         Schema schema = dataContext.getDefaultSchema();
         SqlUtil sqlUtil = new SqlUtil(method.getDeclaredAnnotation(Update.class).value());

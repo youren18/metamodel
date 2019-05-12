@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import proxy.ProxyMapper;
 import executor.SqlUtil;
+import session.Session;
 
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,8 @@ public class DBFTest {
 //        UserMapper mapper = ProxyMapper.getMapper(UserMapper.class);
 //        System.out.println(mapper.selectUser(1));
 
-        Mapper mapper = ProxyMapper.getMapper(Mapper.class);
+        Session session = new Session("/myconnect.properties");
+        Mapper mapper = session.getMapper(Mapper.class);
         List<Stu> stu = mapper.findAll(12);
         for (Stu s : stu){
             System.out.println(s.toString());
@@ -59,7 +61,8 @@ public class DBFTest {
 
     @Test
     public void testInsert(){
-        Mapper mapper = ProxyMapper.getMapper(Mapper.class);
+        Session session = new Session("/myconnect.properties");
+        Mapper mapper = session.getMapper(Mapper.class);
         Stu stu = new Stu();
         stu.setId(23);
         stu.setAge(11);
@@ -71,13 +74,15 @@ public class DBFTest {
 
     @Test
     public void testDelete(){
-        Mapper mapper = ProxyMapper.getMapper(Mapper.class);
+        Session session = new Session("/myconnect.properties");
+        Mapper mapper = session.getMapper(Mapper.class);
         mapper.deleteStuById(2);
     }
 
     @Test
     public void testUpdate(){
-        Mapper mapper = ProxyMapper.getMapper(Mapper.class);
+        Session session = new Session("/myconnect.properties");
+        Mapper mapper = session.getMapper(Mapper.class);
         mapper.updateStubyid("tony1", 0, 22);
     }
 
