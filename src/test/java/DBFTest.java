@@ -44,10 +44,22 @@ public class DBFTest {
 
         Session session = new Session("/myconnect.properties");
         Mapper mapper = session.getMapper(Mapper.class);
-        List<Stu> stu = mapper.findAll(12);
-        for (Stu s : stu){
-            System.out.println(s.toString());
-        }
+        Date firstDate = new Date();
+        Stu stu = mapper.findone(2);
+        if(stu != null)
+            System.out.println(stu.toString());
+//        List<Stu> stu = mapper.findAll(12);
+//        for (Stu s : stu){
+//            System.out.println(s.toString());
+//        }
+//        Date secondDate = new Date();
+//
+//        List<Stu> stus = mapper.findAll(12);
+//        for (Stu s : stus){
+//            System.out.println(s.toString());
+//        }
+//        System.out.println(secondDate.getTime() - firstDate.getTime());
+//        System.out.println(new Date().getTime() - secondDate.getTime());
 //        List<Stu> stus = mapper.findAll(111);
 //        for (Stu s : stus){
 //            System.out.println(s.toString());
@@ -64,7 +76,7 @@ public class DBFTest {
         Session session = new Session("/myconnect.properties");
         Mapper mapper = session.getMapper(Mapper.class);
         Stu stu = new Stu();
-        stu.setId(23);
+        stu.setId(24);
         stu.setAge(11);
         stu.setName("name");
         mapper.insertStu(stu);
@@ -76,7 +88,7 @@ public class DBFTest {
     public void testDelete(){
         Session session = new Session("/myconnect.properties");
         Mapper mapper = session.getMapper(Mapper.class);
-        mapper.deleteStuById(2);
+        mapper.deleteStuById(24);
     }
 
     @Test
@@ -94,7 +106,7 @@ public class DBFTest {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         //mapper.insertT(new User(11,"he11"));
         Date firstDate = new Date();
-        User user = mapper.selectUser(10);
+        User user = mapper.selectUser(10000);
         Date secondDate = new Date();
         user = mapper.selectUser(10);
         System.out.println(user.toString());

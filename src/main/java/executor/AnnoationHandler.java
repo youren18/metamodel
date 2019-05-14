@@ -40,7 +40,9 @@ public class AnnoationHandler {
 
     public <T> T handlerQueryOne(Method method, Object[] objects) {
         List<T> result = handlerQueryList(method, objects);
-
+        if(result.isEmpty()){
+            return null;
+        }
         return result.get(0);
     }
 
@@ -121,8 +123,13 @@ public class AnnoationHandler {
                     String columnName = field.getDeclaredAnnotation(Column.class).value();
                     org.apache.metamodel.schema.Column column = table.getColumnByName(columnName);
                     Object fieldValue = set.getRow().getValue(column);
+                    if(!fieldValue.getClass().toString().contains(field.getType().toString())){
+                        System.out.println(field.getType());
+                        System.out.println(fieldValue.getClass());
+                        System.out.println(fieldValue.toString());
+                        fieldValue = Integer.parseInt(fieldValue.toString());
+                    }
                     field.setAccessible(true);
-
                     field.set(object, fieldValue);
                 }
                 result.add( (T) object);
@@ -133,6 +140,8 @@ public class AnnoationHandler {
         }
         return null;
     }
+
+
 
     /**
      * 处理插入操作，可以一次插入一个对象

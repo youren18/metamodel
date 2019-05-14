@@ -40,21 +40,23 @@ public class Executor {
     }
 
     public int insert(Method method, Object[] args){
-
-        return 0;
+        cache.clear();
+        return annoationHandler.handleInsertOne(method, args);
     }
 
     public int update(Method method, Object[] args){
-
-        return 0;
+        cache.clear();
+        return annoationHandler.handleUpdate(method, args);
     }
 
     public int delete(Method method, Object[] args){
-
-        return 0;
+        cache.clear();
+        return annoationHandler.handleDelete(method, args);
     }
 
     public void close(){
+        close = true;
+        cache.clear();
 
     }
 

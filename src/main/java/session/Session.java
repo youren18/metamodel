@@ -44,4 +44,8 @@ public class Session{
         return proxyMapper.getMapper(clazz);
     }
 
+    public void close(){
+
+    }
+
 }
