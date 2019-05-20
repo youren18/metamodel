@@ -10,6 +10,12 @@ public interface Mapper {
     @Query("select * from person where id = ?")
     Stu findone(int id);
 
+    @Query("select * from person where id = ? and age = ?")
+    Stu findByIdAndAge(int id, int age);
+
+
+    @Query("select * from person where age = ?")
+    Stu findByAge(int age);
 
     @Query("select * from person where age > ?")
     List<Stu> findAll(int age);

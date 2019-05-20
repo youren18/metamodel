@@ -1,6 +1,8 @@
 import Util.MybatisUtil;
+import entity.Film;
 import entity.Stu;
 import entity.User;
+import mapper.FilmMapping;
 import mapper.Mapper;
 
 import mapper.UserMapper;
@@ -11,10 +13,64 @@ import proxy.ProxyMapper;
 import executor.SqlUtil;
 import session.Session;
 
+import java.sql.*;
 import java.util.Date;
 import java.util.List;
 
 public class DBFTest {
+
+    @Test
+    public void testFilmSelect(){
+        Session session = new Session("/myconnect.properties");
+        FilmMapping mapper = session.getMapper(FilmMapping.class);
+        Film film = mapper.selectById(15);
+        System.out.println(film.toString());
+
+
+//        Date firstDate = new Date();
+//        for (int i = 0; i < 100; ++i){
+//            int random = (int)(1+Math.random()*(100-1+1));
+//            film = mapper.selectById(random);
+//        }
+//        Date secondDate = new Date();
+//        System.out.println(secondDate.getTime() - firstDate.getTime());
+    }
+
+    @Test
+    public void testJDBC(){
+        String driverName = "com.mysql.cj.jdbc.Driver";
+        String url = "jdbc:mysql://localhost:3306/mystu?serverTimezone=GMT%2B8";
+        String user = "root";
+        String password = "password";
+        Connection conn = null;
+        Date firstDate = new Date();
+        for (int i = 0; i < 100; ++i){
+        try {
+            Class.forName(driverName);
+            conn = DriverManager.getConnection(url, user, password);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String sqlString = "select * from film where film.fid = ?";
+        ResultSet pst = null;
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(sqlString);
+
+            int random = (int)(1+Math.random()*(100-1+1));
+            preparedStatement.setString(1, String.valueOf(random));
+            pst = preparedStatement.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        }
+        Date secondDate = new Date();
+        System.out.println(secondDate.getTime() - firstDate.getTime());
+
+    }
+
 
     @Test
     public void testSqlUtil(){
@@ -44,8 +100,8 @@ public class DBFTest {
 
         Session session = new Session("/myconnect.properties");
         Mapper mapper = session.getMapper(Mapper.class);
-        Date firstDate = new Date();
-        Stu stu = mapper.findone(2);
+
+        Stu stu = mapper.findByAge(1);
         if(stu != null)
             System.out.println(stu.toString());
 //        List<Stu> stu = mapper.findAll(12);
@@ -105,13 +161,13 @@ public class DBFTest {
         SqlSession sqlSession = factory.openSession(true);
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         //mapper.insertT(new User(11,"he11"));
-        Date firstDate = new Date();
-        User user = mapper.selectUser(10000);
-        Date secondDate = new Date();
-        user = mapper.selectUser(10);
+        //Date firstDate = new Date();
+        User user = mapper.selectUser(12);
+        //Date secondDate = new Date();
+        //user = mapper.selectUser(10);
         System.out.println(user.toString());
-        System.out.println(secondDate.getTime() - firstDate.getTime());
-        System.out.println(new Date().getTime() - secondDate.getTime());
+//        System.out.println(secondDate.getTime() - firstDate.getTime());
+//        System.out.println(new Date().getTime() - secondDate.getTime());
         sqlSession.close();
     }
 

@@ -58,6 +58,7 @@ public class AnnoationHandler {
 
         DataContext dataContext = Connect.createConnect();
         Schema schema = dataContext.getDefaultSchema();
+
         Table table = schema.getTableByName(tables.get(0));
         if (table == null){
             table = schema.getTable(0);
@@ -101,7 +102,8 @@ public class AnnoationHandler {
     private <T> List<T> getResult(DataSet set, Method method, Table table) {
         try {
             Type genericReturnType = method.getGenericReturnType();
-            Type type = null;
+
+            Type type = genericReturnType;
             if (genericReturnType instanceof ParameterizedType) {
                 Type[] actualTypeArguments = ((ParameterizedType) genericReturnType).getActualTypeArguments();
                 type = actualTypeArguments[0];
@@ -110,9 +112,6 @@ public class AnnoationHandler {
 
             List<T> result = new LinkedList<>();
             //Object object = returnType.newInstance();
-            if (type == null) {
-                type = method.getReturnType();
-            }
 
             while (set.next()) {
                 Object object = Class.forName(String.valueOf(type).substring(6)).newInstance();
@@ -123,14 +122,14 @@ public class AnnoationHandler {
                     String columnName = field.getDeclaredAnnotation(Column.class).value();
                     org.apache.metamodel.schema.Column column = table.getColumnByName(columnName);
                     Object fieldValue = set.getRow().getValue(column);
-                    if(!fieldValue.getClass().toString().contains(field.getType().toString())){
-                        System.out.println(field.getType());
-                        System.out.println(fieldValue.getClass());
-                        System.out.println(fieldValue.toString());
+                    if(fieldValue!=null && !fieldValue.getClass().toString().contains(field.getType().toString())){
+
                         fieldValue = Integer.parseInt(fieldValue.toString());
                     }
                     field.setAccessible(true);
-                    field.set(object, fieldValue);
+                    if (fieldValue != null){
+                        field.set(object, fieldValue);
+                    }
                 }
                 result.add( (T) object);
             }

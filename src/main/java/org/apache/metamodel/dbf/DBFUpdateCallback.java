@@ -53,7 +53,7 @@ public class DBFUpdateCallback extends AbstractUpdateCallback implements UpdateC
             dbfWriter = null;
             //dbfWriter.setFields(fields);
             Object object[] = new Object[strings.length];
-            if(fields == null){//想空文件中写入数据时，要根据table中的列的属性来判断类型，设置field
+            if(fields == null){//向空文件中写入数据时，要根据table中的列的属性来判断类型，设置field
                 fields = new DBFField[strings.length];
                 for (int i = 0; i < strings.length; ++i){
                     fields[i] = new DBFField();

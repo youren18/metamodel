@@ -17,6 +17,7 @@ public class DBF {
         String sql = "delete from stu";
 
 
+
 //        Properties properties = new Properties();
 //        try {
 //            properties.load(new FileInputStream("E:\\code\\java\\sd\\src\\main\\resources\\myconnect.properties"));

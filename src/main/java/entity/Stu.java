@@ -7,7 +7,7 @@ import annotation.Table;
 public class Stu {
 
     @Column("id")
-    private int id;
+    private int ids;
 
     @Column("name")
     private String name;
@@ -18,14 +18,14 @@ public class Stu {
     @Override
     public String toString(){
         return "stu { " +
-                "id = " + id +
+                "id = " + ids +
                 " name = " + name +
                 " age = " + age +
                 " }";
     }
 
     public Stu(int i, String s, int a){
-        id = i;
+        ids = i;
         name = s;
         age = a;
 
@@ -35,7 +35,7 @@ public class Stu {
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.ids = id;
     }
 
     public String getName() {
@@ -43,7 +43,7 @@ public class Stu {
     }
 
     public int getId() {
-        return id;
+        return ids;
     }
 
     public void setName(String name) {
