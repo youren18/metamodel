@@ -15,6 +15,5 @@ public interface UserMapper {
 
 
     @Select("select * from user where ids = #{id}")
-
     public User selectUser(@Param("id") int id);
 }

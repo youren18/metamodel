@@ -11,7 +11,6 @@ public class Config {
     private static final String PRO_URL = "url";
     private static final String PRO_DRIVER = "driver";
     private static final String PRO_RESOURCE = "resource";
-
     private String resource;
     private final Map<String, Object> map;
 

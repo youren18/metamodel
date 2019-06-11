@@ -18,11 +18,9 @@ public class OrmInvocationHandler implements InvocationHandler {
         this.object = object;
     }
     /**
-
      * @param proxy  表示动态代理的目标对象
      * @param method 代表要执行的方法
      * @param args   方法的参数数组
-
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -42,7 +40,6 @@ public class OrmInvocationHandler implements InvocationHandler {
         } else if (method.isAnnotationPresent(Update.class)){//根据更新注解调用更新处理函数
             return session.update(method, args);
         }
-
         return null;
     }
 }

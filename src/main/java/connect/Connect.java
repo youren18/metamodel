@@ -2,10 +2,12 @@ package connect;
 
 import org.apache.metamodel.DataContext;
 import org.apache.metamodel.UpdateableDataContext;
+import org.apache.metamodel.dbf.DBFDataContext;
 import org.apache.metamodel.factory.DataContextFactoryRegistryImpl;
 import org.apache.metamodel.factory.DataContextPropertiesImpl;
 import org.apache.metamodel.jdbc.JdbcDataContext;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +56,11 @@ public class Connect{
                 e.printStackTrace();
             }
 
-        } else {
+        } else if(properties.getProperty("type").equals("dbf")){
+            UpdateableDataContext updateableDataContext = new DBFDataContext(new File("e:/film.dbf"));
+            return updateableDataContext;
+        }
+        else {
             throw new IllegalArgumentException("not support update data type!");
         }
         return null;

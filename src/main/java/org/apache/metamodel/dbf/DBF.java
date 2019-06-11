@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Properties;
 
 public class DBF {
-    public static void main(String[] args) {
-        String sql = "delete from stu";
+    public static void main(String[] args) throws IOException {
+        //String sql = "delete from stu";
 
 
 
@@ -76,39 +76,77 @@ public class DBF {
 //        } catch (FileNotFoundException e) {
 //            e.printStackTrace();
 //        }
-//        DBFField fields[] = new DBFField[3];
-//        fields[0] = new DBFField();
-//        fields[0].setType(DBFDataType.NUMERIC);
-//        fields[0].setName("id");
-//        fields[0].setLength(15);
-//        fields[1] = new DBFField();
-//        fields[1].setName("name");
-//        fields[1].setType(DBFDataType.CHARACTER);
-//        fields[1].setLength(15);
-//        fields[2] = new DBFField();
-//        fields[2].setName("age");
-//        fields[2].setType(DBFDataType.NUMERIC);
-//        fields[2].setLength(15);
-//        DBFWriter writer = null;
-//        try {
-//            writer = new DBFWriter(new FileOutputStream(new File("e:\\emp.dbf")));
-//            writer.setFields(fields);
-//            Object objects[] = new Object[3];
-//            objects[0] = 2;
-//            objects[1] = "tom";
-//            objects[2] = 3;
-//            writer.addRecord(objects);
-//            Object objectss[] = new Object[3];
-//            objectss[0] = 12;
-//            objectss[1] = "bigtom";
-//            objectss[2] = 13;
-//            writer.addRecord(objectss);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } finally {
-//            DBFUtils.close(writer);
-//        }
-////
-//        //DBFReader dbfReader = new DBFReader()
+        DBFField fields[] = new DBFField[6];
+        fields[0] = new DBFField();
+        fields[0].setType(DBFDataType.NUMERIC);
+        fields[0].setName("fid");
+        fields[0].setLength(15);
+
+        fields[1] = new DBFField();
+        fields[1].setName("fname");
+        fields[1].setType(DBFDataType.CHARACTER);
+        fields[1].setLength(25);
+
+        fields[2] = new DBFField();
+        fields[2].setName("ftype");
+        fields[2].setType(DBFDataType.CHARACTER);
+        fields[2].setLength(25);
+
+        fields[3] = new DBFField();
+        fields[3].setName("dname");
+        fields[3].setType(DBFDataType.CHARACTER);
+        fields[3].setLength(25);
+
+        fields[4] = new DBFField();
+        fields[4].setName("length");
+        fields[4].setType(DBFDataType.NUMERIC);
+        fields[4].setLength(25);
+
+        fields[5] = new DBFField();
+        fields[5].setName("grade");
+        fields[5].setType(DBFDataType.NUMERIC);
+        fields[5].setLength(25);
+
+        DBFWriter writer = new DBFWriter(new FileOutputStream("e:\\film.dbf"));
+        writer.setCharactersetName("GBK");
+        writer.setFields(fields);
+            Object objects[] = new Object[6];
+            objects[0] = 1;
+            objects[1] = "hello";
+            objects[2] = "type";
+            objects[3] = "hav";
+            objects[4] = 115;
+            objects[5] = 64;
+            writer.addRecord(objects);
+
+            objects = new Object[6];
+            objects[0] = 2;
+            objects[1] = "战神纪";
+            objects[2] = "奇幻";
+            objects[3] = "哈斯朝鲁";
+            objects[4] = 119;
+            objects[5] = 36;
+            writer.addRecord(objects);
+
+            objects = new Object[6];
+            objects[0] = 3;
+            objects[1] = "湮灭";
+            objects[2] = "奇幻";
+            objects[3] = "亚历克斯·嘉兰";
+            objects[4] = 112;
+            objects[5] = 73;
+            writer.addRecord(objects);
+
+            objects = new Object[6];
+            objects[0] = 4;
+            objects[1] = "heio";
+            objects[2] = "tyu";
+            objects[3] = "rpy";
+            objects[4] = 141;
+            objects[5] = 70;
+            writer.addRecord(objects);
+            writer.close();
+
+        //DBFReader dbfReader = new DBFReader()
     }
 }

@@ -154,6 +154,7 @@ public class AnnoationHandler {
         SqlUtil sqlUtil = new SqlUtil(method.getDeclaredAnnotation(Insert.class).value());
 
         Table table = schema.getTableByName(sqlUtil.getTables().get(0));
+        //Table table = schema.getTable(0);
         updateableDataContext.executeUpdate(new UpdateScript() {
             @Override
             public void run(UpdateCallback callback) {
@@ -186,7 +187,8 @@ public class AnnoationHandler {
         UpdateableDataContext dataContext = Connect.createUpdateContext();
         Schema schema = dataContext.getDefaultSchema();
         SqlUtil sqlUtil = new SqlUtil(method.getDeclaredAnnotation(Delete.class).value());
-        Table table = schema.getTableByName(sqlUtil.getTables().get(0));
+        //Table table = schema.getTableByName(sqlUtil.getTables().get(0));
+        Table table = schema.getTable(0);
         dataContext.executeUpdate(new UpdateScript() {
             @Override
             public void run(UpdateCallback callback) {
@@ -220,7 +222,8 @@ public class AnnoationHandler {
         UpdateableDataContext dataContext = Connect.createUpdateContext();
         Schema schema = dataContext.getDefaultSchema();
         SqlUtil sqlUtil = new SqlUtil(method.getDeclaredAnnotation(Update.class).value());
-        Table table = schema.getTableByName(sqlUtil.getTables().get(0));
+        //Table table = schema.getTableByName(sqlUtil.getTables().get(0));
+        Table table = schema.getTable(0);
         dataContext.executeUpdate(new UpdateScript() {
             @Override
             public void run(UpdateCallback callback) {

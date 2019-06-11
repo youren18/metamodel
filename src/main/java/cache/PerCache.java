@@ -6,7 +6,6 @@ import java.util.Map;
 public class PerCache implements Cache {
 
     private String id;
-
     private Map<Object, Object> cache = new HashMap<Object, Object>();
 
     public PerCache(String id){
